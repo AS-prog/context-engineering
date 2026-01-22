@@ -9,6 +9,7 @@ htmlcov/
 *.lock
 credenciales.json
 secrets.json
+opencode.jsonc
 .DS_Store
 Thumbs.db
 
