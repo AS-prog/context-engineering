@@ -1,9 +1,9 @@
 #!/bin/bash
 # setup.sh - Context Engineering Setup Script
 # Versión: 1.0
-# Descripción: Crea symlinks de los archivos del primer nivel de las carpetas
-#              seleccionadas del repositorio Context Engineering a un proyecto destino.
-#              (No incluye subcarpetas como docs/)
+# Descripción: Crea symlinks individuales de todos los archivos encontrados
+#              recursivamente en las carpetas seleccionadas, excluyendo
+#              cualquier contenido dentro de carpetas llamadas "docs/".
 
 set -e  # Salir en error
 
@@ -227,10 +227,10 @@ confirm_action() {
     print_step 4 "Confirmación"
     echo ""
     
-    # Contar archivos a enlazar (solo primer nivel)
+    # Contar archivos a enlazar (recursivo, excluyendo docs)
     FILE_COUNT=0
     for folder in "${SELECTED_FOLDERS[@]}"; do
-        count=$(find "$SCRIPT_DIR/$folder" -maxdepth 1 -type f | wc -l | tr -d ' ')
+        count=$(find "$SCRIPT_DIR/$folder" -type f | grep -v "/docs/" | wc -l | tr -d ' ')
         FILE_COUNT=$((FILE_COUNT + count))
     done
     
@@ -270,28 +270,29 @@ create_symlinks() {
             mkdir -p "$DEST_FOLDER"
         fi
         
-        # Iterar SOLO por los archivos del PRIMER nivel (sin subcarpetas)
-        for file in "$SOURCE_FOLDER"/*; do
-            # Solo procesar archivos (no directorios)
-            if [ -f "$file" ]; then
-                # Obtener nombre de archivo
-                filename=$(basename "$file")
-                dest_file="$DEST_FOLDER/$filename"
-                
-                # Verificar si symlink ya existe o es archivo regular
-                if [ -L "$dest_file" ] || [ -f "$dest_file" ]; then
-                    # Eliminar link o archivo existente (sobrescribir siempre)
-                    rm -f "$dest_file"
-                fi
-                
-                # Crear symlink
-                if ln -s "$file" "$dest_file" 2>/dev/null; then
-                    print_success "${folder}/${filename}"
-                    ((SUCCESS_COUNT++))
-                else
-                    print_error "${folder}/${filename} (error al crear symlink)"
-                    ((ERROR_COUNT++))
-                fi
+        # Iterar recursivamente por todos los archivos (excluyendo docs)
+        find "$SOURCE_FOLDER" -type f | grep -v "/docs/" | while read -r file; do
+            # Calcular ruta relativa desde la carpeta fuente
+            relative_path="${file#$SOURCE_FOLDER/}"
+
+            # Crear directorio destino si no existe
+            dest_file="$DEST_FOLDER/$relative_path"
+            dest_dir=$(dirname "$dest_file")
+            mkdir -p "$dest_dir"
+
+            # Verificar si symlink ya existe o es archivo regular
+            if [ -L "$dest_file" ] || [ -f "$dest_file" ]; then
+                # Eliminar link o archivo existente (sobrescribir siempre)
+                rm -f "$dest_file"
+            fi
+
+            # Crear symlink
+            if ln -s "$file" "$dest_file" 2>/dev/null; then
+                print_success "${folder}/${relative_path}"
+                ((SUCCESS_COUNT++))
+            else
+                print_error "${folder}/${relative_path} (error al crear symlink)"
+                ((ERROR_COUNT++))
             fi
         done
     done
