@@ -162,18 +162,18 @@ create_links() {
         done
     done
     
-    # Copia de configuración extra si es OpenCode
+    # Enlace de configuración extra si es OpenCode
     if [ "$SELECTED_TOOL" = "OpenCode" ] && [ -f "$SCRIPT_DIR/opencode.jsonc" ]; then
-        # Copiar opencode.jsonc
-        cp "$SCRIPT_DIR/opencode.jsonc" "$PROJECT_PATH/"
-        
+        # Crear enlace simbólico para opencode.jsonc
+        ln -sf "$SCRIPT_DIR/opencode.jsonc" "$PROJECT_PATH/opencode.jsonc"
+
         # Crear archivo .env si no existe
         if [ ! -f "$PROJECT_PATH/.env" ]; then
             echo "CONTEXT7_API_KEY=YOUR_API_KEY_HERE" > "$PROJECT_PATH/.env"
             echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Archivo .env creado para API key.${NC}"
         fi
-        
-        echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Configuración opencode.jsonc copiada.${NC}"
+
+        echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Configuración opencode.jsonc enlazada.${NC}"
         echo -e "${P_BLUE}┃${NC}   ${P_GRAY}   Recuerda actualizar CONTEXT7_API_KEY en .env${NC}"
     fi
 }
