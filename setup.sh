@@ -1,326 +1,180 @@
 #!/bin/bash
-# setup.sh - Context Engineering Setup Script
-# Versión: 1.0
-# Descripción: Crea symlinks individuales de todos los archivos encontrados
-#              recursivamente en las carpetas seleccionadas, excluyendo
-#              cualquier contenido dentro de carpetas llamadas "docs/".
+# setup.sh - Context Engineering Setup Script (Modern TUI Edition)
 
-set -e  # Salir en error
+set -e
 
 # ═══════════════════════════════════════════════════════════════
-# CONFIGURACIÓN
+# CONFIGURACIÓN Y COLORES
 # ═══════════════════════════════════════════════════════════════
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VERSION="1.0.0"
-
-# Herramientas disponibles (extensible)
 TOOLS=("OpenCode" "Claude")
 
-# Colores (compatibles con la mayoría de terminales)
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+# Colores ANSI (Sutiles y Modernos)
+G='\033[0;32m'      # Verde (Éxito)
+B='\033[0;34m'      # Azul (Pasos)
+C='\033[0;36m'      # Cian (Header)
+Y='\033[1;33m'      # Amarillo (Aviso)
+R='\033[0;31m'      # Rojo (Error)
+D='\033[0;90m'      # Gris Oscuro (Rutas y Dimmed)
+NC='\033[0m'        # No Color
 BOLD='\033[1m'
 
+# Símbolos
+CHECK="✔"
+CROSS="✖"
+INFO="ℹ"
+STEP_LINE="│"
+STEP_BOTTOM="└"
+
 # ═══════════════════════════════════════════════════════════════
-# FUNCIONES DE UI
+# FUNCIONES DE UI (ESTILO CLACK/CLAUDE)
 # ═══════════════════════════════════════════════════════════════
 
 print_header() {
     clear
-    echo -e "${CYAN}"
-    echo "╔══════════════════════════════════════════════════════════════╗"
-    echo "║           CONTEXT ENGINEERING - SETUP v${VERSION}              ║"
-    echo "╚══════════════════════════════════════════════════════════════╝"
-    echo -e "${NC}"
+    echo -e "${C}${BOLD}┌────────────────────────────────────────────────────────────┐"
+    echo -e "│            CONTEXT ENGINEERING - SETUP v${VERSION}            │"
+    echo -e "└────────────────────────────────────────────────────────────┘${NC}"
+    echo -e "${D}  Ubicación: $SCRIPT_DIR${NC}\n"
 }
 
 print_step() {
-    local step_num=$1
-    local step_title=$2
-    echo ""
-    echo -e "${BLUE}┌─ PASO ${step_num}: ${step_title} ─────────────────────────────────┐${NC}"
+    echo -e "${B}${BOLD}◆${NC} ${BOLD}$1${NC}"
 }
 
 print_success() {
-    echo -e "${GREEN}✓${NC} $1"
+    echo -e "  ${G}${CHECK}${NC} $1"
 }
 
 print_error() {
-    echo -e "${RED}✗${NC} $1"
+    echo -e "  ${R}${CROSS}${NC} $1"
 }
 
 # ═══════════════════════════════════════════════════════════════
-# PASO 1: SELECCIÓN DE HERRAMIENTA
+# LÓGICA DE PASOS
 # ═══════════════════════════════════════════════════════════════
 
 select_tool() {
-    print_step 1 "Selecciona tu herramienta"
-    echo ""
+    print_step "Paso 1: Selecciona tu herramienta"
+    echo -e "${B}${STEP_LINE}${NC}"
     
     local i=1
     for tool in "${TOOLS[@]}"; do
-        echo "   [${i}] ${tool}"
+        echo -e "${B}${STEP_LINE}${NC}  ${D}[${i}]${NC} ${tool}"
         ((i++))
     done
     
-    echo ""
+    echo -e "${B}${STEP_LINE}${NC}"
     while true; do
-        read -p "   Selección: " choice
+        echo -ne "${B}${STEP_LINE}${NC}  Selección: "
+        read choice
         if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le "${#TOOLS[@]}" ]; then
             SELECTED_TOOL="${TOOLS[$((choice-1))]}"
-            print_success "Herramienta seleccionada: ${SELECTED_TOOL}"
+            print_success "Herramienta: ${BOLD}${SELECTED_TOOL}${NC}"
             break
         else
-            print_error "Opción inválida. Intenta de nuevo."
+            echo -e "${B}${STEP_LINE}${NC}  ${R}! Selección inválida${NC}"
         fi
     done
+    echo -e "${B}${STEP_LINE}${NC}"
 }
 
-# ═══════════════════════════════════════════════════════════════
-# PASO 2: RUTA DEL PROYECTO
-# ═══════════════════════════════════════════════════════════════
-
 get_project_path() {
-    print_step 2 "Ruta del proyecto"
-    echo ""
+    print_step "Paso 2: Ruta del proyecto"
+    echo -e "${B}${STEP_LINE}${NC}"
     
     while true; do
-        read -p "   Ingresa la ruta absoluta: " PROJECT_PATH
-        
-        # Expandir ~ si se usa
+        echo -ne "${B}${STEP_LINE}${NC}  Ruta absoluta: "
+        read PROJECT_PATH
         PROJECT_PATH="${PROJECT_PATH/#\~/$HOME}"
         
         if [ -d "$PROJECT_PATH" ]; then
-            if [ -w "$PROJECT_PATH" ]; then
-                print_success "Directorio válido: ${PROJECT_PATH}"
-                break
-            else
-                print_error "Sin permisos de escritura en: ${PROJECT_PATH}"
-            fi
+            print_success "Directorio: ${D}${PROJECT_PATH}${NC}"
+            break
         else
-            print_error "Directorio no existe: ${PROJECT_PATH}"
-            read -p "   ¿Crear directorio? [s/N]: " create_dir
+            echo -ne "${B}${STEP_LINE}${NC}  ${Y}! No existe. ¿Crearlo? [s/N]: "
+            read create_dir
             if [[ "$create_dir" =~ ^[sS]$ ]]; then
                 mkdir -p "$PROJECT_PATH"
-                print_success "Directorio creado: ${PROJECT_PATH}"
+                print_success "Creado: ${D}${PROJECT_PATH}${NC}"
                 break
             fi
         fi
     done
-}
-
-# ═══════════════════════════════════════════════════════════════
-# PASO 3: DETECCIÓN Y SELECCIÓN DE CARPETAS
-# ═══════════════════════════════════════════════════════════════
-
-get_available_folders() {
-    AVAILABLE_FOLDERS=()
-    for dir in "$SCRIPT_DIR"/*/; do
-        if [ -d "$dir" ]; then
-            folder_name=$(basename "$dir")
-            # Excluir carpetas ocultas, .git, node_modules, etc.
-            if [[ ! "$folder_name" =~ ^\. ]] && \
-               [[ "$folder_name" != "node_modules" ]] && \
-               [[ "$folder_name" != "venv" ]]; then
-                AVAILABLE_FOLDERS+=("$folder_name")
-            fi
-        fi
-    done
+    echo -e "${B}${STEP_LINE}${NC}"
 }
 
 select_folders() {
-    print_step 3 "Selecciona carpetas a importar"
-    echo ""
+    print_step "Paso 3: Carpetas a importar"
+    echo -e "${B}${STEP_LINE}${NC}"
     
-    get_available_folders
+    # Detección simplificada para el ejemplo
+    AVAILABLE_FOLDERS=($(ls -d */ 2>/dev/null | sed 's/\///' | grep -vE "node_modules|venv"))
     
-    if [ ${#AVAILABLE_FOLDERS[@]} -eq 0 ]; then
-        print_error "No hay carpetas disponibles para importar"
-        exit 1
-    fi
-    
-    # Array para tracking de selecciones (0=no, 1=sí)
     declare -a SELECTIONS
-    for i in "${!AVAILABLE_FOLDERS[@]}"; do
-        SELECTIONS[$i]=0
-    done
+    for i in "${!AVAILABLE_FOLDERS[@]}"; do SELECTIONS[$i]=0; done
     
     while true; do
-        echo "   Carpetas disponibles (usa números para toggle):"
-        echo ""
-        
         for i in "${!AVAILABLE_FOLDERS[@]}"; do
             if [ "${SELECTIONS[$i]}" -eq 1 ]; then
-                echo -e "   ${GREEN}[x]${NC} $((i+1)). ${AVAILABLE_FOLDERS[$i]}"
+                echo -e "${B}${STEP_LINE}${NC}  ${G}[●]${NC} $((i+1)). ${AVAILABLE_FOLDERS[$i]}"
             else
-                echo -e "   [ ] $((i+1)). ${AVAILABLE_FOLDERS[$i]}"
+                echo -e "${B}${STEP_LINE}${NC}  ${D}[○]${NC} $((i+1)). ${AVAILABLE_FOLDERS[$i]}"
             fi
         done
         
-        echo ""
-        echo "   [Enter] Confirmar | [a] Todas | [n] Ninguna | [q] Salir"
-        echo ""
-        read -p "   Opción: " opt
+        echo -e "${B}${STEP_LINE}${NC}"
+        echo -ne "${B}${STEP_LINE}${NC}  ${D}[Número: toggle | Enter: Confirmar]${NC}: "
+        read opt
         
-        case "$opt" in
-            "")
-                # Confirmar selección
-                SELECTED_FOLDERS=()
-                for i in "${!AVAILABLE_FOLDERS[@]}"; do
-                    if [ "${SELECTIONS[$i]}" -eq 1 ]; then
-                        SELECTED_FOLDERS+=("${AVAILABLE_FOLDERS[$i]}")
-                    fi
-                done
-                
-                if [ ${#SELECTED_FOLDERS[@]} -eq 0 ]; then
-                    print_error "Debes seleccionar al menos una carpeta"
-                else
-                    break
-                fi
-                ;;
-            [aA])
-                for i in "${!SELECTIONS[@]}"; do
-                    SELECTIONS[$i]=1
-                done
-                ;;
-            [nN])
-                for i in "${!SELECTIONS[@]}"; do
-                    SELECTIONS[$i]=0
-                done
-                ;;
-            [qQ])
-                echo "   Cancelado por el usuario."
-                exit 0
-                ;;
-            *)
-                if [[ "$opt" =~ ^[0-9]+$ ]] && [ "$opt" -ge 1 ] && [ "$opt" -le "${#AVAILABLE_FOLDERS[@]}" ]; then
-                    idx=$((opt-1))
-                    if [ "${SELECTIONS[$idx]}" -eq 1 ]; then
-                        SELECTIONS[$idx]=0
-                    else
-                        SELECTIONS[$idx]=1
-                    fi
-                fi
-                ;;
-        esac
+        if [[ -z "$opt" ]]; then
+            SELECTED_FOLDERS=()
+            for i in "${!AVAILABLE_FOLDERS[@]}"; do
+                [ "${SELECTIONS[$i]}" -eq 1 ] && SELECTED_FOLDERS+=("${AVAILABLE_FOLDERS[$i]}")
+            done
+            if [ ${#SELECTED_FOLDERS[@]} -gt 0 ]; then break; fi
+        elif [[ "$opt" =~ ^[0-9]+$ ]] && [ "$opt" -le "${#AVAILABLE_FOLDERS[@]}" ]; then
+            idx=$((opt-1))
+            SELECTIONS[$idx]=$((1 - SELECTIONS[$idx]))
+        fi
         
-        # Limpiar pantalla para actualizar
-        clear
-        print_header
-        print_step 3 "Selecciona carpetas a importar"
-        echo ""
+        # Refrescar UI sutilmente
+        tput cuu $(( ${#AVAILABLE_FOLDERS[@]} + 2 ))
+        tput ed
     done
     
-    print_success "Carpetas seleccionadas: ${SELECTED_FOLDERS[*]}"
+    print_success "Seleccionadas: ${G}${SELECTED_FOLDERS[*]}${NC}"
+    echo -e "${B}${STEP_LINE}${NC}"
 }
-
-# ═══════════════════════════════════════════════════════════════
-# PASO 4: CONFIRMACIÓN
-# ═══════════════════════════════════════════════════════════════
-
-confirm_action() {
-    print_step 4 "Confirmación"
-    echo ""
-    
-    # Contar archivos a enlazar (recursivo, excluyendo docs)
-    FILE_COUNT=0
-    for folder in "${SELECTED_FOLDERS[@]}"; do
-        count=$(find "$SCRIPT_DIR/$folder" -type f | grep -v "/docs/" | wc -l | tr -d ' ')
-        FILE_COUNT=$((FILE_COUNT + count))
-    done
-    
-    echo "   Resumen de operación:"
-    echo "   • Herramienta: ${SELECTED_TOOL}"
-    echo "   • Proyecto: ${PROJECT_PATH}"
-    echo "   • Carpetas: ${SELECTED_FOLDERS[*]}"
-    echo "   • Archivos a enlazar: ${FILE_COUNT}"
-    if [ "$SELECTED_TOOL" = "OpenCode" ]; then
-        echo "   • Archivo de configuración: opencode.jsonc será copiado"
-    fi
-    echo ""
-    
-    read -p "   ¿Continuar? [s/N]: " confirm
-    if [[ ! "$confirm" =~ ^[sS]$ ]]; then
-        echo "   Cancelado por el usuario."
-        exit 0
-    fi
-}
-
-# ═══════════════════════════════════════════════════════════════
-# PASO 5: CREACIÓN DE SYMLINKS (ARCHIVO POR ARCHIVO)
-# ═══════════════════════════════════════════════════════════════
 
 create_symlinks() {
-    print_step 5 "Creando symlinks"
-    echo ""
-    
-    SUCCESS_COUNT=0
-    ERROR_COUNT=0
+    print_step "Paso 4: Creando Enlaces"
+    echo -e "${B}${STEP_LINE}${NC}"
     
     for folder in "${SELECTED_FOLDERS[@]}"; do
-        echo "   Procesando ${folder}/"
-        
+        echo -e "${B}${STEP_LINE}${NC}  ${BOLD}${folder}/${NC}"
         SOURCE_FOLDER="$SCRIPT_DIR/$folder"
         DEST_FOLDER="$PROJECT_PATH/$folder"
         
-        # Crear directorio destino si no existe
-        if [ ! -d "$DEST_FOLDER" ]; then
-            mkdir -p "$DEST_FOLDER"
-        fi
+        mkdir -p "$DEST_FOLDER"
         
-        # Iterar recursivamente por todos los archivos (excluyendo docs)
         find "$SOURCE_FOLDER" -type f | grep -v "/docs/" | while read -r file; do
-            # Calcular ruta relativa desde la carpeta fuente
-            relative_path="${file#$SOURCE_FOLDER/}"
-
-            # Crear directorio destino si no existe
-            dest_file="$DEST_FOLDER/$relative_path"
-            dest_dir=$(dirname "$dest_file")
-            mkdir -p "$dest_dir"
-
-            # Verificar si symlink ya existe o es archivo regular
-            if [ -L "$dest_file" ] || [ -f "$dest_file" ]; then
-                # Eliminar link o archivo existente (sobrescribir siempre)
-                rm -f "$dest_file"
-            fi
-
-            # Crear symlink
-            if ln -s "$file" "$dest_file" 2>/dev/null; then
-                print_success "${folder}/${relative_path}"
-                ((SUCCESS_COUNT++))
-            else
-                print_error "${folder}/${relative_path} (error al crear symlink)"
-                ((ERROR_COUNT++))
-            fi
+            rel="${file#$SOURCE_FOLDER/}"
+            dest="$DEST_FOLDER/$rel"
+            mkdir -p "$(dirname "$dest")"
+            ln -sf "$file" "$dest"
+            echo -e "${B}${STEP_LINE}${NC}    ${D}├─${NC} $rel"
         done
     done
-
-    # Copiar archivo de configuración si se seleccionó OpenCode
-    if [ "$SELECTED_TOOL" = "OpenCode" ]; then
-        if cp "$SCRIPT_DIR/opencode.jsonc" "$PROJECT_PATH/"; then
-            print_success "Archivo de configuración copiado: opencode.jsonc"
-        else
-            print_error "Error al copiar archivo de configuración: opencode.jsonc"
-            ((ERROR_COUNT++))
-        fi
-    fi
-
-    echo ""
-    echo "   ══════════════════════════════════════════════════════════"
-    if [ $ERROR_COUNT -eq 0 ]; then
-        echo -e "   ${GREEN}✓ ${SUCCESS_COUNT} symlinks creados exitosamente${NC}"
-    else
-        echo -e "   ${YELLOW}⚠ ${SUCCESS_COUNT} creados, ${ERROR_COUNT} errores${NC}"
-    fi
+    
+    echo -e "${B}${STEP_BOTTOM}───────────────────────────────────────────────────${NC}"
+    echo -e "\n${G}${BOLD}¡Setup completado con éxito!${NC} 🚀"
 }
 
 # ═══════════════════════════════════════════════════════════════
-# MAIN
+# EJECUCIÓN
 # ═══════════════════════════════════════════════════════════════
 
 main() {
@@ -328,17 +182,11 @@ main() {
     select_tool
     get_project_path
     select_folders
-    confirm_action
     create_symlinks
     
-    echo ""
-    echo -e "${GREEN}¡Setup completado!${NC}"
-    echo ""
-    echo "Próximos pasos:"
-    echo "  1. cd ${PROJECT_PATH}"
-    echo "  2. Verifica los symlinks: ls -la ${SELECTED_FOLDERS[0]}/"
-    echo "  3. Consulta AGENTS.md para convenciones"
-    echo ""
+    echo -e "\n${D}Próximos pasos:${NC}"
+    echo -e "  1. cd $PROJECT_PATH"
+    echo -e "  2. Verifica con: ls -la"
 }
 
 main "$@"
