@@ -1,0 +1,48 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "opencode",
+  "model": "anthropic/claude-sonnet-4-5",
+  "autoupdate": true,
+
+  "permission": {
+    // Configuración segura: pregunta antes de ejecutar comandos o aplicar cambios.
+    "bash": "ask",
+    "edit": "ask",
+    "read": "allow"
+  },
+
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        // Se recomienda usar la variable de entorno para no exponer la clave en el archivo.
+        "CONTEXT7_API_KEY": "YOUR_API_KEY_HERE"
+      },
+      "enabled": true
+    }
+  },
+
+  "watcher": {
+    "ignore": [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/dist/**",
+      "**/.env*",            // Protege credenciales de variables de entorno
+      "**/*.pem",            // Protege llaves privadas
+      "**/*.key",            // Protege llaves criptográficas
+      "**/secrets/**",       // Carpetas de secretos
+      "**/.aws/**",          // Credenciales de AWS
+      "**/.ssh/**",          // Llaves SSH
+      "**/config/*.yaml",    // Evita lectura de configuraciones con passwords
+      "**/.python-history"   // Protege historial de terminal
+    ]
+  },
+
+  // Los agentes se cargan desde archivos .md en ~/.config/opencode/agents/
+  "agent": {}, 
+
+  "keybinds": {
+    "leader": "ctrl+x"
+  }
+}

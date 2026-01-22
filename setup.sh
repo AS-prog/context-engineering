@@ -239,6 +239,9 @@ confirm_action() {
     echo "   • Proyecto: ${PROJECT_PATH}"
     echo "   • Carpetas: ${SELECTED_FOLDERS[*]}"
     echo "   • Archivos a enlazar: ${FILE_COUNT}"
+    if [ "$SELECTED_TOOL" = "OpenCode" ]; then
+        echo "   • Archivo de configuración: opencode.jsonc será copiado"
+    fi
     echo ""
     
     read -p "   ¿Continuar? [s/N]: " confirm
@@ -296,7 +299,17 @@ create_symlinks() {
             fi
         done
     done
-    
+
+    # Copiar archivo de configuración si se seleccionó OpenCode
+    if [ "$SELECTED_TOOL" = "OpenCode" ]; then
+        if cp "$SCRIPT_DIR/opencode.jsonc" "$PROJECT_PATH/"; then
+            print_success "Archivo de configuración copiado: opencode.jsonc"
+        else
+            print_error "Error al copiar archivo de configuración: opencode.jsonc"
+            ((ERROR_COUNT++))
+        fi
+    fi
+
     echo ""
     echo "   ══════════════════════════════════════════════════════════"
     if [ $ERROR_COUNT -eq 0 ]; then
