@@ -1,0 +1,40 @@
+# Archivos sensibles y temporales
+.env
+.env.local
+*.pyc
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+*.lock
+credenciales.json
+secrets.json
+.DS_Store
+Thumbs.db
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+
+# Entornos virtuales
+venv/
+env/
+ENV/
+.venv
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+*.log
+
+# Sistema
+.cache/
+.tmp/
