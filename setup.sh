@@ -1,192 +1,215 @@
 #!/bin/bash
-# setup.sh - Context Engineering Setup Script (Modern TUI Edition)
+# setup.sh - CONTEXT BRAIN: Deployment Protocol
+# Versión: 1.0.0
 
 set -e
 
 # ═══════════════════════════════════════════════════════════════
-# CONFIGURACIÓN Y COLORES
+# PALETA DE COLORES (XTERM-256)
 # ═══════════════════════════════════════════════════════════════
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VERSION="1.0.0"
-TOOLS=("OpenCode" "Claude")
-
-# Colores ANSI (Sutiles y Modernos)
-G='\033[0;32m'      # Verde (Éxito)
-B='\033[0;34m'      # Azul (Pasos)
-C='\033[0;36m'      # Cian (Header)
-Y='\033[1;33m'      # Amarillo (Aviso)
-R='\033[0;31m'      # Rojo (Error)
-D='\033[0;90m'      # Gris Oscuro (Rutas y Dimmed)
-NC='\033[0m'        # No Color
+P_MAGENTA='\033[38;5;201m'
+P_CYAN='\033[38;5;51m'
+P_LIME='\033[38;5;46m'
+P_GOLD='\033[38;5;220m'
+P_BLUE='\033[38;5;33m'
+P_GRAY='\033[38;5;244m'
+P_DARK='\033[38;5;236m'
+BG_DARK='\033[48;5;234m'
 BOLD='\033[1m'
+NC='\033[0m'
 
-# Símbolos
-CHECK="✔"
-CROSS="✖"
-INFO="ℹ"
-STEP_LINE="│"
-STEP_BOTTOM="└"
+# ICONOS Y SÍMBOLOS
+ICO_TOOL="🛠️"
+ICO_PATH="📂"
+ICO_FOLDERS="🌿"
+ICO_SYNC="⚡"
+ICO_SUCCESS="💎"
+SIDE_L="▒▓█"
+SIDE_R="█▓▒"
+
+# CONFIGURACIÓN
+VERSION="1.0.0"
+TOOLS=("OpenCode" "Claude" "Gemini")
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ═══════════════════════════════════════════════════════════════
-# FUNCIONES DE UI (ESTILO CLACK/CLAUDE)
+# COMPONENTES VISUALES
 # ═══════════════════════════════════════════════════════════════
 
-print_header() {
+draw_hero() {
     clear
-    echo -e "${C}${BOLD}┌────────────────────────────────────────────────────────────┐"
-    echo -e "│            CONTEXT ENGINEERING - SETUP v${VERSION}            │"
-    echo -e "└────────────────────────────────────────────────────────────┘${NC}"
-    echo -e "${D}  Ubicación: $SCRIPT_DIR${NC}\n"
+    echo -e "${P_CYAN}"
+    echo -e "  ██████╗ ██████╗ ███╗   ██╗████████╗███████╗██╗  ██╗████████╗"
+    echo -e " ██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔════╝╚██╗██╔╝╚══██╔══╝"
+    echo -e " ██║     ██║   ██║██╔██╗ ██║   ██║   █████╗   ╚███╔╝    ██║   "
+    echo -e " ██║     ██║   ██║██║╚██╗██║   ██║   ██╔══╝   ██╔██╗    ██║   "
+    echo -e " ╚██████╗╚██████╔╝██║ ╚████║   ██║   ███████╗██╔╝ ██╗   ██║   "
+    echo -e "  ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝   "
+    echo -e "${P_MAGENTA}"
+    echo -e " ███████╗███╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗███████╗██████╗ ██╗███╗   ██╗ ██████╗ "
+    echo -e " ██╔════╝████╗  ██║██╔════╝ ██║████╗  ██║██╔════╝██╔════╝██╔══██╗██║████╗  ██║██╔════╝ "
+    echo -e " █████╗  ██╔██╗ ██║██║  ███╗██║██╔██╗ ██║█████╗  █████╗  ██████╔╝██║██╔██╗ ██║██║  ███╗"
+    echo -e " ██╔══╝  ██║╚██╗██║██║   ██║██║██║╚██╗██║██╔══╝  ██╔══╝  ██╔══██╗██║██║╚██╗██║██║   ██║"
+    echo -e " ███████╗██║ ╚████║╚██████╔╝██║██║ ╚████║███████╗███████╗██║  ██║██║██║ ╚████║╚██████╔╝"
+    echo -e " ╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ "
+    echo -e "${P_LIME}"
+    echo -e " ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗     "
+    echo -e " ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║     v${VERSION}"
+    echo -e "    ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║     "
+    echo -e "    ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║     "
+    echo -e "    ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████╗"
+    echo -e "    ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝"
+    echo -e "${NC}"
+
+    echo -e "${BG_DARK}${BOLD}${P_CYAN}  SYSTEM CORE  ${NC}${BG_DARK} ▒░░ Inicializando Entorno by @andressotelo ░▒ ${NC}"
+    echo ""
+    
+    # Efecto de carga falso para estética
+    echo -ne "${P_GRAY}  Iniciando protocolos...${NC}" && sleep 0.3
+    echo -e "\r${P_LIME}  Protocolos [READY]          ${NC}"
+    sleep 0.2
 }
 
-print_step() {
-    echo -e "${B}${BOLD}◆${NC} ${BOLD}$1${NC}"
-}
-
-print_success() {
-    echo -e "  ${G}${CHECK}${NC} $1"
-}
-
-print_error() {
-    echo -e "  ${R}${CROSS}${NC} $1"
+step_header() {
+    echo -e "${P_BLUE}┃${NC}"
+    echo -e "${P_BLUE}┃${NC} ${BOLD}${P_BLUE}┏${NC} $1"
+    echo -e "${P_BLUE}┃${NC} ${P_BLUE}┗━${NC} ${P_GRAY}░▒▓█${NC}"
 }
 
 # ═══════════════════════════════════════════════════════════════
-# LÓGICA DE PASOS
+# LÓGICA DEL SCRIPT
 # ═══════════════════════════════════════════════════════════════
 
 select_tool() {
-    print_step "Paso 1: Selecciona tu herramienta"
-    echo -e "${B}${STEP_LINE}${NC}"
-    
+    step_header "${ICO_TOOL} SELECCIÓN DE ENTORNO"
     local i=1
     for tool in "${TOOLS[@]}"; do
-        echo -e "${B}${STEP_LINE}${NC}  ${D}[${i}]${NC} ${tool}"
+        echo -e "${P_BLUE}┃${NC}   ${P_DARK}${i}.${NC} ${BOLD}${tool}${NC}"
         ((i++))
     done
-    
-    echo -e "${B}${STEP_LINE}${NC}"
-    while true; do
-        echo -ne "${B}${STEP_LINE}${NC}  Selección: "
-        read choice
-        if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le "${#TOOLS[@]}" ]; then
-            SELECTED_TOOL="${TOOLS[$((choice-1))]}"
-            print_success "Herramienta: ${BOLD}${SELECTED_TOOL}${NC}"
-            break
-        else
-            echo -e "${B}${STEP_LINE}${NC}  ${R}! Selección inválida${NC}"
-        fi
-    done
-    echo -e "${B}${STEP_LINE}${NC}"
+    echo -e "${P_BLUE}┃${NC}"
+    echo -ne "${P_BLUE}┃${NC}   ${P_MAGENTA}❯${NC} "
+    read choice
+    SELECTED_TOOL="${TOOLS[$((choice-1))]}"
+    echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Herramienta: ${SELECTED_TOOL}${NC}"
 }
 
 get_project_path() {
-    print_step "Paso 2: Ruta del proyecto"
-    echo -e "${B}${STEP_LINE}${NC}"
+    step_header "${ICO_PATH} RUTA DE DESTINO"
+    echo -e "${P_BLUE}┃${NC}   ${P_GRAY}Ingresa ruta absoluta o [~] para Home${NC}"
+    echo -ne "${P_BLUE}┃${NC}   ${P_MAGENTA}❯${NC} "
+    read PROJECT_PATH
+    PROJECT_PATH="${PROJECT_PATH/#\~/$HOME}"
     
-    while true; do
-        echo -ne "${B}${STEP_LINE}${NC}  Ruta absoluta: "
-        read PROJECT_PATH
-        PROJECT_PATH="${PROJECT_PATH/#\~/$HOME}"
-        
-        if [ -d "$PROJECT_PATH" ]; then
-            print_success "Directorio: ${D}${PROJECT_PATH}${NC}"
-            break
+    if [ ! -d "$PROJECT_PATH" ]; then
+        echo -ne "${P_BLUE}┃${NC}   ${P_GOLD}⚠ No existe. ¿Crear? [s/N]: ${NC}"
+        read create_dir
+        if [[ "$create_dir" =~ ^[sS]$ ]]; then
+            mkdir -p "$PROJECT_PATH"
         else
-            echo -ne "${B}${STEP_LINE}${NC}  ${Y}! No existe. ¿Crearlo? [s/N]: "
-            read create_dir
-            if [[ "$create_dir" =~ ^[sS]$ ]]; then
-                mkdir -p "$PROJECT_PATH"
-                print_success "Creado: ${D}${PROJECT_PATH}${NC}"
-                break
-            fi
+            echo "Abortado."; exit 1
         fi
-    done
-    echo -e "${B}${STEP_LINE}${NC}"
+    fi
+    echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Ruta fijada: ${PROJECT_PATH}${NC}"
 }
 
 select_folders() {
-    print_step "Paso 3: Carpetas a importar"
-    echo -e "${B}${STEP_LINE}${NC}"
-    
-    # Detección simplificada para el ejemplo
+    step_header "${ICO_FOLDERS} MÓDULOS DE CONOCIMIENTO"
     AVAILABLE_FOLDERS=($(ls -d */ 2>/dev/null | sed 's/\///' | grep -vE "node_modules|venv"))
     
-    declare -a SELECTIONS
-    for i in "${!AVAILABLE_FOLDERS[@]}"; do SELECTIONS[$i]=0; done
-    
-    while true; do
-        for i in "${!AVAILABLE_FOLDERS[@]}"; do
-            if [ "${SELECTIONS[$i]}" -eq 1 ]; then
-                echo -e "${B}${STEP_LINE}${NC}  ${G}[●]${NC} $((i+1)). ${AVAILABLE_FOLDERS[$i]}"
-            else
-                echo -e "${B}${STEP_LINE}${NC}  ${D}[○]${NC} $((i+1)). ${AVAILABLE_FOLDERS[$i]}"
-            fi
-        done
-        
-        echo -e "${B}${STEP_LINE}${NC}"
-        echo -ne "${B}${STEP_LINE}${NC}  ${D}[Número: toggle | Enter: Confirmar]${NC}: "
-        read opt
-        
-        if [[ -z "$opt" ]]; then
-            SELECTED_FOLDERS=()
-            for i in "${!AVAILABLE_FOLDERS[@]}"; do
-                [ "${SELECTIONS[$i]}" -eq 1 ] && SELECTED_FOLDERS+=("${AVAILABLE_FOLDERS[$i]}")
-            done
-            if [ ${#SELECTED_FOLDERS[@]} -gt 0 ]; then break; fi
-        elif [[ "$opt" =~ ^[0-9]+$ ]] && [ "$opt" -le "${#AVAILABLE_FOLDERS[@]}" ]; then
-            idx=$((opt-1))
-            SELECTIONS[$idx]=$((1 - SELECTIONS[$idx]))
-        fi
-        
-        # Refrescar UI sutilmente
-        tput cuu $(( ${#AVAILABLE_FOLDERS[@]} + 2 ))
-        tput ed
+    if [ ${#AVAILABLE_FOLDERS[@]} -eq 0 ]; then
+        echo -e "${P_BLUE}┃${NC}   ${R}Error: No se encontraron carpetas.${NC}"; exit 1
+    fi
+
+    # Selección simplificada para este diseño (se pueden activar/desactivar todas)
+    echo -e "${P_BLUE}┃${NC}   ${P_GRAY}Módulos detectados:${NC}"
+    for folder in "${AVAILABLE_FOLDERS[@]}"; do
+        echo -e "${P_BLUE}┃${NC}   ${P_LIME}[ON]${NC} ${folder}"
     done
     
-    print_success "Seleccionadas: ${G}${SELECTED_FOLDERS[*]}${NC}"
-    echo -e "${B}${STEP_LINE}${NC}"
+    echo -e "${P_BLUE}┃${NC}"
+    echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Procesando todos los módulos activos...${NC}"
+    SELECTED_FOLDERS=("${AVAILABLE_FOLDERS[@]}")
 }
 
-create_symlinks() {
-    print_step "Paso 4: Creando Enlaces"
-    echo -e "${B}${STEP_LINE}${NC}"
+create_links() {
+    step_header "${ICO_SYNC} EJECUCIÓN DE ENLACES (Recursivo)"
+    SUCCESS_COUNT=0
     
     for folder in "${SELECTED_FOLDERS[@]}"; do
-        echo -e "${B}${STEP_LINE}${NC}  ${BOLD}${folder}/${NC}"
+        echo -e "${P_BLUE}┃${NC}   ${BOLD}📦 ${folder}${NC}"
         SOURCE_FOLDER="$SCRIPT_DIR/$folder"
         DEST_FOLDER="$PROJECT_PATH/$folder"
         
+        # Asegurar que el directorio base exista en el destino
         mkdir -p "$DEST_FOLDER"
         
+        # Búsqueda recursiva excluyendo carpetas 'docs'
         find "$SOURCE_FOLDER" -type f | grep -v "/docs/" | while read -r file; do
-            rel="${file#$SOURCE_FOLDER/}"
-            dest="$DEST_FOLDER/$rel"
-            mkdir -p "$(dirname "$dest")"
-            ln -sf "$file" "$dest"
-            echo -e "${B}${STEP_LINE}${NC}    ${D}├─${NC} $rel"
+            # Calcular ruta relativa para replicar estructura
+            relative_path="${file#$SOURCE_FOLDER/}"
+            dest_file="$DEST_FOLDER/$relative_path"
+            
+            # Crear subdirectorios si es necesario
+            mkdir -p "$(dirname "$dest_file")"
+            
+            # Crear o sobrescribir symlink
+            if ln -sf "$file" "$dest_file"; then
+                echo -e "${P_BLUE}┃${NC}     ${P_DARK}⚡${NC} ${P_GRAY}${relative_path}${NC}"
+                ((SUCCESS_COUNT++))
+            fi
         done
     done
     
-    echo -e "${B}${STEP_BOTTOM}───────────────────────────────────────────────────${NC}"
-    echo -e "\n${G}${BOLD}¡Setup completado con éxito!${NC} 🚀"
+    # Copia de configuración extra si es OpenCode
+    if [ "$SELECTED_TOOL" = "OpenCode" ] && [ -f "$SCRIPT_DIR/opencode.jsonc" ]; then
+        # Copiar opencode.jsonc
+        cp "$SCRIPT_DIR/opencode.jsonc" "$PROJECT_PATH/"
+        
+        # Crear archivo .env si no existe
+        if [ ! -f "$PROJECT_PATH/.env" ]; then
+            echo "CONTEXT7_API_KEY=YOUR_API_KEY_HERE" > "$PROJECT_PATH/.env"
+            echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Archivo .env creado para API key.${NC}"
+        fi
+        
+        echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Configuración opencode.jsonc copiada.${NC}"
+        echo -e "${P_BLUE}┃${NC}   ${P_GRAY}   Recuerda actualizar CONTEXT7_API_KEY en .env${NC}"
+    fi
 }
 
 # ═══════════════════════════════════════════════════════════════
-# EJECUCIÓN
+# FINALIZACIÓN
+# ═══════════════════════════════════════════════════════════════
+
+print_receipt() {
+    echo -e "${P_BLUE}┃${NC}"
+    echo -e "${P_BLUE}┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛${NC}"
+    echo ""
+    echo -e "   ${P_CYAN}${SIDE_L}${NC}${BG_DARK}${BOLD}${P_LIME}  SUCCESSFUL DEPLOYMENT  ${NC}${P_CYAN}${SIDE_R}${NC}"
+    echo ""
+    echo -e "   ${BOLD}Resumen de Operación:${NC}"
+    echo -e "   ${P_GRAY}├─ Herramienta:  ${NC}${SELECTED_TOOL}"
+    echo -e "   ${P_GRAY}├─ Enlaces:      ${NC}${P_LIME}${SUCCESS_COUNT} creados${NC}"
+    echo -e "   ${P_GRAY}└─ Timestamp:    ${NC}$(date '+%Y-%m-%d %H:%M:%S')"
+    echo ""
+    echo -e "   ${BOLD}Próximos pasos:${NC}"
+    echo -e "   ${P_BLUE}1.${NC} Navega a: ${P_GRAY}cd ${PROJECT_PATH}${NC}"
+    echo -e "   ${P_BLUE}2.${NC} Ejecuta tu IA preferida."
+    echo ""
+}
+
+# ═══════════════════════════════════════════════════════════════
+# EJECUCIÓN PRINCIPAL
 # ═══════════════════════════════════════════════════════════════
 
 main() {
-    print_header
+    draw_hero
     select_tool
     get_project_path
     select_folders
-    create_symlinks
-    
-    echo -e "\n${D}Próximos pasos:${NC}"
-    echo -e "  1. cd $PROJECT_PATH"
-    echo -e "  2. Verifica con: ls -la"
+    create_links
+    print_receipt
 }
 
 main "$@"
