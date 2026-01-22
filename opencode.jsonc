@@ -17,7 +17,7 @@
        "url": "https://mcp.context7.com/mcp",
        "headers": {
          // Se recomienda usar la variable de entorno para no exponer la clave en el archivo.
-         "CONTEXT7_API_KEY": "YOUR_API_KEY_HERE"
+         "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
        },
        "enabled": true
      }
