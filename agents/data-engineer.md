@@ -1,7 +1,7 @@
 ---
 description: Ingeniero de Datos Senior que coordina y ejecuta workflows completos de ingeniería de datos
 mode: primary
-model: anthropic/claude-3-5-sonnet-20241022
+model: github-copilot/claude-sonnet-4.5
 temperature: 0.3
 tools:
   read: true

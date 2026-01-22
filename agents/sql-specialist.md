@@ -1,7 +1,7 @@
 ---
 description: Especialista en SQL que diseña, optimiza y ejecuta queries de alta performance
 mode: primary
-model: anthropic/claude-3-5-sonnet-20241022
+model: github-copilot/claude-haiku-4.5
 temperature: 0.1
 tools:
   read: true

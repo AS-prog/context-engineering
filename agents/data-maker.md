@@ -1,7 +1,7 @@
 ---
 description: Orquestador senior que coordina tareas de ingeniería de datos entre agentes especializados
 mode: primary
-model: anthropic/claude-3-5-sonnet-20241022
+model: github-copilot/claude-sonnet-4.5
 temperature: 0.2
 tools:
   read: true

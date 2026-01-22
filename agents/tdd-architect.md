@@ -1,7 +1,7 @@
 ---
 description: Diseña suites de pruebas con TDD, asegurando documentación detallada en cada caso de prueba
-mode: subagent
-model: anthropic/claude-3-5-sonnet-20241022
+mode: primary
+model: github-copilot/claude-opus-4.5
 temperature: 0.0
 tools:
   read: true

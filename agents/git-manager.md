@@ -1,7 +1,7 @@
 ---
 description: Especialista en control de versiones, gestión de ramas y mensajes de commit semánticos
 mode: primary
-model: openrouter/google/gemini-2.0-flash-exp:free
+model: openrouter/x-ai/grok-code-fast-1
 temperature: 0.1
 tools:
   read: true

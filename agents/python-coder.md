@@ -1,7 +1,7 @@
 ---
 description: Especialista en desarrollo Python que cumple estrictamente PEP 8 y estándares de tipado
 mode: primary
-model: openrouter/google/gemini-2.5-flash-lite-preview-09-2025:free
+model: github-copilot/grok-code-fast-1
 temperature: 0.1
 tools:
   read: true
