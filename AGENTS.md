@@ -24,12 +24,11 @@ Este repositorio organiza **agentes especializados** para ejecutar workflows com
 **Estructura**:
 ```
 agents/
-├── data-engineer.md          # Orquestador principal (10K)
+├── data-engineer.md          # Orquestador principal
+├── git-manager.md            # Control de versiones
 ├── python-coder.md           # Implementación Python con PEP 8
 ├── tdd-architect.md          # Diseño de test suites
 ├── sql-specialist.md         # Optimización y diseño SQL
-├── git-manager.md            # Control de versiones
-├── data-maker.md             # Orquestación de pipelines
 └── docs/
     ├── QUICKSTART.md         # Inicio en 5 minutos
     ├── AGENTS_REFERENCE.md   # Documentación completa
@@ -57,7 +56,7 @@ agents/
 ---
 
 ### 2. **python-coder.md** - Implementación Python
-- **Tipo**: Primary Agent
+- **Tipo**: Subagent
 - **Modelo**: Gemini 2.5 Flash
 - **Temperatura**: 0.1
 - **Uso**: Implementación de código Python con PEP 8
@@ -68,7 +67,7 @@ agents/
 - PEP 8 (4 espacios, snake_case, máx 79 chars)
 - Pydantic/Typing para validación
 
-**Invocación**: `@python-coder "Tu especificación aquí"`
+**Invocación**: Invocado por @data-engineer
 
 ---
 
@@ -89,7 +88,7 @@ agents/
 ---
 
 ### 4. **sql-specialist.md** - Especialista SQL
-- **Tipo**: Primary Agent
+- **Tipo**: Subagent
 - **Modelo**: Claude 3.5 Sonnet
 - **Temperatura**: 0.1
 - **Uso**: Diseño, optimización y ejecución SQL
@@ -100,12 +99,12 @@ agents/
 - CTEs, agregaciones, joins complejos
 - Documentación de lógica SQL
 
-**Invocación**: `@sql-specialist "Tu consulta o diseño aquí"`
+**Invocación**: Invocado por @data-engineer
 
 ---
 
 ### 5. **git-manager.md** - Control de Versiones
-- **Tipo**: Primary Agent
+- **Tipo**: Subagent
 - **Modelo**: Gemini 2.0 Flash
 - **Temperatura**: 0.1
 - **Uso**: Gestión de ramas, commits semánticos
@@ -117,7 +116,7 @@ agents/
 - `chore:` - Tareas auxiliares
 - `docs:` - Documentación
 
-**Invocación**: `@git-manager "Tu tarea de Git aquí"`
+**Invocación**: Invocado por @data-engineer
 
 ---
 

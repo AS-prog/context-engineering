@@ -33,7 +33,32 @@
       "**/.python-history"
     ]
   },
-  "agent": {},
+  "agent": {
+    "data-engineer": {
+      "mode": "primary",
+      "permission": {
+        "task": {
+          "*": "deny",
+          "git-manager": "allow",
+          "tdd-architect": "allow",
+          "python-coder": "allow",
+          "sql-specialist": "allow"
+        }
+      }
+    },
+    "git-manager": {
+      "mode": "subagent"
+    },
+    "tdd-architect": {
+      "mode": "subagent"
+    },
+    "python-coder": {
+      "mode": "subagent"
+    },
+    "sql-specialist": {
+      "mode": "subagent"
+    }
+  },
   "keybinds": {
     "leader": "ctrl+x"
   }

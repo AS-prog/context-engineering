@@ -36,11 +36,10 @@
 | Agente | Tipo | Modelo | Temp | Usa Para |
 |--------|------|--------|------|----------|
 | **data-engineer** | Primary | Claude 3.5 | 0.3 | ⭐ Flujo completo |
-| **sql-specialist** | Primary | Claude 3.5 | 0.1 | SQL & queries |
-| data-maker | Primary | Claude 3.5 | 0.2 | Orquestación multi-pipeline |
-| git-manager | Primary | Gemini 2.0 | 0.1 | Git (ramas, commits) |
-| python-coder | Primary | Gemini 2.5 | 0.1 | Código Python (PEP 8) |
-| tdd-architect | Subagent | Claude 3.5 | 0.0 | Tests TDD |
+| **sql-specialist** | Subagent | Claude 3.5 | 0.1 | SQL & queries |
+| **git-manager** | Subagent | Gemini 2.0 | 0.1 | Git (ramas, commits) |
+| **python-coder** | Subagent | Gemini 2.5 | 0.1 | Código Python (PEP 8) |
+| **tdd-architect** | Subagent | Claude 3.5 | 0.0 | Tests TDD |
 
 ---
 
@@ -153,7 +152,6 @@ que pase los tests: ..."
 | Solo código Python | @python-coder |
 | Solo tests | @tdd-architect |
 | Solo git | @git-manager |
-| Múltiples pipelines | @data-maker |
 
 ---
 
@@ -205,11 +203,6 @@ tools:
 - **Herramientas**: read, write, edit, bash, glob, grep
 - **Protocolo**: Docstrings ESCENARIO/COMPORTAMIENTO/PROPÓSITO
 - **Temperatura**: 0.0 (exacto)
-
-### data-maker
-- **Herramientas**: read, glob, grep, task (sin write/edit)
-- **Propósito**: Orquestar múltiples componentes
-- **Temperatura**: 0.2 (flexible)
 
 ---
 

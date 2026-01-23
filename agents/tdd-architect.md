@@ -1,6 +1,6 @@
 ---
 description: Diseña suites de pruebas con TDD, asegurando documentación detallada en cada caso de prueba
-mode: primary
+mode: subagent
 model: github-copilot/claude-opus-4.5
 temperature: 0.0
 tools:

@@ -45,11 +45,10 @@ que pase estos tests: ..."
 "Crear tests para un validador de emails que use Pydantic"
 ```
 
-**Necesitas coordinar múltiples pipelines:**
+**Necesitas SQL:**
 ```bash
-@data-maker
-"Orquestar 3 pipelines de ingesta (API, CSV, DB) 
-que compartan validación común"
+@sql-specialist
+"Optimizar esta query lenta que tarda 30 segundos"
 ```
 
 ---
@@ -63,14 +62,14 @@ AGENTES DISPONIBLES
 │  └─ Punto de entrada para requerimientos de alto nivel
 │     Coordina todos los otros agentes
 │
-├─ 🟡 data-maker (Primary)
-│  └─ Orquestación avanzada de múltiples pipelines
-│
-├─ 🟢 git-manager (Primary)
+├─ 🟢 git-manager (Subagent)
 │  └─ Gestión de ramas y commits
 │
-├─ 🔵 python-coder (Primary)
+├─ 🔵 python-coder (Subagent)
 │  └─ Implementación de código Python
+│
+├─ 🔍 sql-specialist (Subagent)
+│  └─ Diseño y optimización de queries SQL
 │
 └─ 🟣 tdd-architect (Subagent)
    └─ Diseño de test suites TDD
@@ -102,11 +101,11 @@ Plan:
 ### Paso 3: Ejecución
 ```
 data-engineer invoca:
-  → @git-manager: crear feature/csv-sales-validator
-  → @tdd-architect: tests para validación
-  → @python-coder: implementar validador
-  → validación técnica
-  → @git-manager: commit feat: add csv validator
+   → @git-manager: crear feature/csv-sales-validator
+   → @tdd-architect: tests para validación
+   → @python-coder: implementar validador
+   → validación técnica
+   → @git-manager: commit feat: add csv validator
 ```
 
 ### Paso 4: Entrega
@@ -159,9 +158,7 @@ límite superior, y cantidad mínima."
 con mensaje 'feat: add structured logging to pipeline'"
 ```
 
----
-
-## 🛠 Configuración de Herramientas
+---## 🛠 Configuración de Herramientas
 
 ### data-engineer (Todas las herramientas)
 ```yaml

@@ -1,6 +1,6 @@
 ---
 description: Especialista en SQL que diseña, optimiza y ejecuta queries de alta performance
-mode: primary
+mode: subagent
 model: github-copilot/claude-haiku-4.5
 temperature: 0.1
 tools:

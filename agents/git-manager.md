@@ -1,6 +1,6 @@
 ---
 description: Especialista en control de versiones, gestión de ramas y mensajes de commit semánticos
-mode: primary
+mode: subagent
 model: openrouter/x-ai/grok-code-fast-1
 temperature: 0.1
 tools:

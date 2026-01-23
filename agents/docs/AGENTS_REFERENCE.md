@@ -61,7 +61,7 @@ git-manager (commit semántico)
 ---
 
 ### 0b. **sql-specialist** (Especialista)
-- **Modo**: Primary
+- **Modo**: Subagent
 - **Modelo**: Claude Sonnet 3.5
 - **Temperature**: 0.1 (Precisión máxima en queries)
 - **Propósito**: Especialista en SQL que diseña, optimiza y ejecuta queries
@@ -69,7 +69,7 @@ git-manager (commit semántico)
 - **Entrada típica**: Requerimiento de acceso a datos, optimización, esquema
 - **Salida típica**: Queries optimizadas, EXPLAIN PLAN, documentación
 
-**Cuándo usarlo**: Para cualquier trabajo relacionado con SQL: diseño de esquemas, escritura de queries, optimización de performance, análisis de EXPLAIN PLAN, migraciones de datos.
+**Cuándo usarlo**: Invocado por data-engineer para cualquier trabajo relacionado con SQL: diseño de esquemas, escritura de queries, optimización de performance, análisis de EXPLAIN PLAN, migraciones de datos.
 
 **Casos de uso**:
 - Diseñar esquemas de base de datos
@@ -81,39 +81,27 @@ git-manager (commit semántico)
 
 ---
 
-### 1. **data-maker** (Orquestador)
-- **Modo**: Primary
-- **Modelo**: Claude Sonnet 3.5
-- **Temperature**: 0.2
-- **Propósito**: Coordinar tareas de ingeniería de datos
-- **Herramientas principales**: task, read, glob, grep
-- **Flujo**: Análisis → git-manager → tdd-architect → python-coder → git-manager
-
-**Cuándo usarlo**: Para orquestar pipelines de datos complejos que requieren múltiples agentes especializados. Alternativa a data-engineer cuando necesitas control más granular de la orquestación.
-
----
-
-### 2. **git-manager** (Control de Versiones)
-- **Modo**: Primary
+### 1. **git-manager** (Control de Versiones)
+- **Modo**: Subagent
 - **Modelo**: Google Gemini 2.0 Flash
 - **Temperature**: 0.1
 - **Propósito**: Gestión de ramas, commits semánticos
 - **Herramientas principales**: bash, edit, read, glob
 - **Permisos bash**: ask (git status/diff allow)
 
-**Cuándo usarlo**: Para crear ramas, hacer commits, manejar flujos de Git con seguridad.
+**Cuándo usarlo**: Invocado por data-engineer para crear ramas, hacer commits, manejar flujos de Git con seguridad.
 
-### 3. **python-coder** (Implementación)
-- **Modo**: Primary
+### 2. **python-coder** (Implementación)
+- **Modo**: Subagent
 - **Modelo**: Google Gemini 2.5 Flash Lite
 - **Temperature**: 0.1
 - **Propósito**: Implementar código Python conforme a PEP 8
 - **Herramientas principales**: read, write, edit, bash, glob, grep
 - **Regla lingüística**: Código en inglés, docstrings en español
 
-**Cuándo usarlo**: Para implementar soluciones Python basadas en tests, con énfasis en tipado y documentación.
+**Cuándo usarlo**: Invocado por data-engineer para implementar soluciones Python basadas en tests, con énfasis en tipado y documentación.
 
-### 4. **tdd-architect** (Diseño de Pruebas)
+### 3. **tdd-architect** (Diseño de Pruebas)
 - **Modo**: Subagent
 - **Modelo**: Claude Sonnet 3.5
 - **Temperature**: 0.0
@@ -121,9 +109,9 @@ git-manager (commit semántico)
 - **Herramientas principales**: read, write, edit, bash, glob, grep
 - **Protocolo**: Análisis → Planificación → Codificación (RED) → Validación
 
-**Cuándo usarlo**: Para diseñar pruebas documentadas que guíen la implementación (Test-Driven Development).
+**Cuándo usarlo**: Invocado por data-engineer para diseñar pruebas documentadas que guíen la implementación (Test-Driven Development).
 
-### 5. **_template.md** (Plantilla)
+### 4. **_template.md** (Plantilla)
 - **Propósito**: Referencia para crear nuevos agentes
 - **Incluye**: Comentarios explicativos de todos los campos
 - **Uso**: Copiar y personalizar
@@ -139,10 +127,9 @@ git-manager (commit semántico)
 | Herramienta | read | write | edit | bash | glob | grep | webfetch | task |
 |-------------|------|-------|------|------|------|------|----------|------|
 | data-engineer| ✅   | ✅    | ✅   | ✅*  | ✅   | ✅   | ✅       | ✅   |
-| sql-specialist| ✅  | ✅    | ✅   | ✅*  | ✅   | ✅   | ❌       | ❌   |
-| data-maker  | ✅   | ❌    | ❌   | ❌   | ✅   | ✅   | ❌       | ✅   |
 | git-manager | ✅   | ❌    | ✅   | ✅*  | ✅   | ✅   | ❌       | ❌   |
 | python-coder| ✅   | ✅    | ✅   | ✅   | ✅   | ✅   | ❌       | ❌   |
+| sql-specialist| ✅  | ✅    | ✅   | ✅*  | ✅   | ✅   | ❌       | ❌   |
 | tdd-architect| ✅  | ✅    | ✅   | ✅   | ✅   | ✅   | ❌       | ❌   |
 
 *data-engineer & git-manager & sql-specialist: bash requiere "ask" para seguridad
@@ -151,7 +138,6 @@ git-manager (commit semántico)
 
 - **0.0** (Determinístico): tdd-architect - Pruebas exactas
 - **0.1** (Preciso): git-manager, python-coder, sql-specialist - Implementación segura
-- **0.2** (Balanceado): data-maker - Coordinación flexible
 - **0.3** (Flexible): data-engineer - Análisis y diseño adaptativo
 
 ---
@@ -204,9 +190,9 @@ data-engineer → python-coder (solo implementación)
 data-engineer → tdd-architect (solo tests)
 ```
 
-**Orquestación Avanzada**: Usar `data-maker` (múltiples pipelines)
+**Orquestación Avanzada**: Todos los workflows pasan por `data-engineer`
 ```
-data-engineer → data-maker (coordinar múltiples componentes)
+data-engineer coordina a todos los subagentes (git-manager, tdd-architect, python-coder, sql-specialist)
 ```
 
 ---

@@ -43,12 +43,12 @@
 
 ---
 
-### 2. 🔍 **sql-specialist.md** (7.8K) ⭐ NUEVO
-**Tipo**: Primary | **Modelo**: Claude Sonnet 3.5 | **Temp**: 0.1
+### 2. 🔍 **sql-specialist.md** (7.8K)
+**Tipo**: Subagent | **Modelo**: Claude Sonnet 3.5 | **Temp**: 0.1
 
 **Quién es**: Especialista en SQL de Nivel Senior  
 **Qué hace**: Diseña, optimiza y ejecuta queries de alta performance  
-**Cuándo usarlo**: Para cualquier trabajo relacionado con SQL
+**Cuándo usarlo**: Invocado por data-engineer para cualquier trabajo relacionado con SQL
 
 **Herramientas**: read, write, edit, bash, glob, grep
 
@@ -61,15 +61,39 @@
 
 ---
 
-### 3. 🟡 **data-maker.md** (3.6K)
-**Tipo**: Primary | **Modelo**: Claude Sonnet 3.5 | **Temp**: 0.2
+### 3. 🟢 **git-manager.md** (3.2K)
+**Tipo**: Subagent | **Modelo**: Google Gemini 2.0 Flash | **Temp**: 0.1
 
-**Quién es**: Ingeniero de Datos Senior y Tech Lead  
-**Qué hace**: Orquesta múltiples pipelines de datos  
-**Cuándo usarlo**: Para coordinar componentes complejos o multi-pipeline
+**Quién es**: Especialista en Control de Versiones  
+**Qué hace**: Gestiona ramas, commits semánticos  
+**Cuándo usarlo**: Invocado por data-engineer para operaciones Git (crear ramas, commits, push)
 
-**Herramientas**: read, glob, grep, task (sin write/edit/bash)  
-**Flujo**: Análisis → Delegación a agentes → Validación
+**Herramientas**: read, edit, bash (ask), glob, grep  
+**Especial**: Permisos granulares para git status/diff (allow)
+
+---
+
+### 4. 🔵 **python-coder.md** (3.4K)
+**Tipo**: Subagent | **Modelo**: Google Gemini 2.5 Flash Lite | **Temp**: 0.1
+
+**Quién es**: Desarrollador Senior de Python  
+**Qué hace**: Implementa código Python conforme a PEP 8  
+**Cuándo usarlo**: Invocado por data-engineer para implementar código basado en tests
+
+**Herramientas**: read, write, edit, bash, glob, grep  
+**Especial**: Código en inglés, docstrings en español
+
+---
+
+### 5. 🟣 **tdd-architect.md** (3.9K)
+**Tipo**: Subagent | **Modelo**: Claude Sonnet 3.5 | **Temp**: 0.0
+
+**Quién es**: Ingeniero de QA y Software Senior  
+**Qué hace**: Diseña suites de pruebas con TDD  
+**Cuándo usarlo**: Invocado por data-engineer para crear tests documentados (fase RED)
+
+**Herramientas**: read, write, edit, bash, glob, grep  
+**Especial**: Docstrings con ESCENARIO/COMPORTAMIENTO/PROPÓSITO
 
 ---
 
@@ -167,8 +191,7 @@ cp _template.md mi-agente.md
 ```
 ~/.config/opencode/agents/
 ├── 📘 data-engineer.md          ⭐ PUNTO DE ENTRADA
-├── 🔍 sql-specialist.md         ⭐ NUEVO - Especialista SQL
-├── 🔧 data-maker.md
+├── 🔍 sql-specialist.md         Especialista SQL
 ├── 📦 git-manager.md
 ├── 🐍 python-coder.md
 ├── 🧪 tdd-architect.md
@@ -180,9 +203,9 @@ cp _template.md mi-agente.md
 ```
 
 ### Estadísticas
-- **Total de archivos**: 11
-- **Tamaño total**: ~70K
-- **Agentes**: 7 (6 principales + 1 especialista + 1 template)
+- **Total de archivos**: 10
+- **Tamaño total**: ~65K
+- **Agentes**: 5 (1 principal + 4 subagentes)
 - **Documentación**: 4
 
 ---
@@ -216,7 +239,7 @@ Ejemplos:
 - Git: @git-manager
 - Código: @python-coder
 - Tests: @tdd-architect
-- Orquestación: @data-maker
+- SQL: @sql-specialist
 ```
 
 ### Flujo 3: Híbrido
@@ -269,7 +292,7 @@ para mejorar [aspecto] manteniendo [requisito]"
 ### En data-engineer Específicamente
 - ✅ Acceso a todas las herramientas
 - ✅ Análisis integral de requisitos
-- ✅ Coordinación de 4+ agentes
+- ✅ Coordinación de 4 agentes subagentes
 - ✅ Validación de calidad técnica
 - ✅ Reportes estructurados
 - ✅ Mentoría de otros agentes
@@ -278,12 +301,10 @@ para mejorar [aspecto] manteniendo [requisito]"
 
 ## 🛠 Herramientas por Agente
 
-| Agente | read | write | edit | bash | glob | grep | webfetch | task |
-|--------|------|-------|------|------|------|------|----------|------|
 | **data-engineer** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| data-maker | ✅ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ | ✅ |
 | git-manager | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | python-coder | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
+| sql-specialist | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 | tdd-architect | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ |
 
 ---
