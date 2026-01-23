@@ -14,12 +14,11 @@ Este repositorio organiza **agentes especializados** para ejecutar workflows com
 
 ## 🤖 Agentes Disponibles
 
-- **data-engineer.md** - Orquestador principal
-- **python-coder.md** - Implementación Python con PEP 8
-- **tdd-architect.md** - Diseño de test suites
-- **sql-specialist.md** - Especialista SQL
-- **git-manager.md** - Control de versiones
-- **data-maker.md** - Orquestación de pipelines
+- **data-engineer.md** - Orquestador principal (PRIMARY)
+- **python-coder.md** - Implementación Python con PEP 8 (Subagent)
+- **tdd-architect.md** - Diseño de test suites (Subagent)
+- **sql-specialist.md** - Especialista SQL (Subagent)
+- **git-manager.md** - Control de versiones (Subagent)
 
 ## 📚 Documentación
 
@@ -27,6 +26,7 @@ Este repositorio organiza **agentes especializados** para ejecutar workflows com
 - **agents/docs/QUICKSTART.md** - Inicio en 5 minutos
 - **agents/docs/AGENTS_REFERENCE.md** - Documentación completa
 - **agents/docs/INDEX.md** - Índice de agentes
+- **docs/PRUEBA_ORQUESTACION.md** - Guía para probar la orquestación de agentes
 
 ## 🚀 Quick Start
 
@@ -78,7 +78,7 @@ Usuario → @data-engineer → análisis → git → tests → implementación �
 ## 📞 Contacto
 
 **Mantenedor**: Equipo de Ingeniería de Contexto  
-**Última actualización**: Jan 22, 2025
+**Última actualización**: Jan 23, 2025
 
 ---
 
