@@ -42,7 +42,8 @@
           "git-manager": "allow",
           "tdd-architect": "allow",
           "python-coder": "allow",
-          "sql-specialist": "allow"
+          "sql-specialist": "allow",
+          "code-reviewer": "allow"
         }
       }
     },
@@ -56,6 +57,9 @@
       "mode": "subagent"
     },
     "sql-specialist": {
+      "mode": "subagent"
+    },
+    "code-reviewer": {
       "mode": "subagent"
     }
   },

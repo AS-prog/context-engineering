@@ -1,7 +1,7 @@
 # 🤖 Ingeniería de Contexto - Guía para Agentes
 
 **Versión**: 1.0  
-**Última actualización**: Jan 22, 2025  
+**Última actualización**: Jan 23, 2025  
 **Propósito**: Centralizador de información de ingeniería de contexto para coordinación entre desarrolladores y agentes.
 
 ---
@@ -29,6 +29,7 @@ agents/
 ├── python-coder.md           # Implementación Python con PEP 8
 ├── tdd-architect.md          # Diseño de test suites
 ├── sql-specialist.md         # Optimización y diseño SQL
+├── code-reviewer.md          # Revisión de código
 └── docs/
     ├── QUICKSTART.md         # Inicio en 5 minutos
     ├── AGENTS_REFERENCE.md   # Documentación completa
@@ -47,7 +48,7 @@ agents/
 
 **Responsabilidades**:
 - Análisis integral de requerimientos
-- Orquestación de git-manager, tdd-architect, python-coder
+- Orquestación de git-manager, tdd-architect, python-coder, sql-specialist y code-reviewer
 - Validación de calidad en cada fase
 - Documentación y mentoría técnica
 
@@ -120,19 +121,20 @@ agents/
 
 ---
 
-### 6. **data-maker.md** - Orquestador de Pipelines
-- **Tipo**: Primary Agent
+### 6. **code-reviewer.md** - Revisión de Código
+- **Tipo**: Subagent
 - **Modelo**: Claude 3.5 Sonnet
 - **Temperatura**: 0.2
-- **Uso**: Coordinar múltiples pipelines complejos
+- **Uso**: Revisión de código Python, tests y estándares
 
 **Responsabilidades**:
-- Desglose de tareas complejas
-- Coordinación entre git-manager, tdd-architect, python-coder
-- Validación técnica de calidad
-- Supervisión de fases
+- Revisar código en busca de defectos y anti-patrones
+- Validar PEP 8 y estándares del proyecto
+- Detectar problemas de seguridad y rendimiento
+- Validar Type Hints y Docstrings
+- Evaluar test coverage
 
-**Invocación**: `@data-maker "Tu requerimiento complejo aquí"`
+**Invocación**: Invocado por @data-engineer como revisión final
 
 ---
 
