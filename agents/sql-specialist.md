@@ -124,6 +124,38 @@ LIMIT 100;
 -- - LIMIT evita retornar datos innecesarios
 ```
 
+**Salida de Agente:**
+```
+═══════════════════════════════════════════════════════════════════
+🤖 AGENTE: sql-specialist | INVOCACIÓN INICIADA
+───────────────────────────────────────────────────────────────────
+📋 Tarea recibida: Diseñar esquema / Query para [componente]
+⏱️ Timestamp: [hora de inicio]
+═══════════════════════════════════════════════════════════════════
+
+DISEÑO DE ESQUEMA
+CREATE TABLE emails (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL UNIQUE,
+    is_valid BOOLEAN NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT email_format CHECK (email LIKE '%@%.%')
+);
+
+CREATE INDEX idx_emails_valid ON emails(is_valid);
+CREATE INDEX idx_emails_created ON emails(created_at);
+
+═══════════════════════════════════════════════════════════════════
+✅ AGENTE: sql-specialist | TAREA COMPLETADA
+───────────────────────────────────────────────────────────────────
+📦 Artefactos generados:
+  - Esquema: CREATE TABLE emails ✅
+  - Índices: idx_emails_valid, idx_emails_created ✅
+  - Constraints: Email format validation ✅
+  - Documentación: Lógica explicada ✅
+═══════════════════════════════════════════════════════════════════
+```
+
 ## 5. Límites y Restricciones
 
 ### Siempre hacer:

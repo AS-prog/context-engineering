@@ -75,6 +75,33 @@ def test_calculate_discount_boundary():
     assert apply_discount(100) == 90
 ```
 
+**Salida de Agente:**
+```
+═══════════════════════════════════════════════════════════════════
+🤖 AGENTE: tdd-architect | INVOCACIÓN INICIADA
+───────────────────────────────────────────────────────────────────
+📋 Tarea recibida: Diseñar suite de tests para [componente]
+⏱️ Timestamp: [hora de inicio]
+═══════════════════════════════════════════════════════════════════
+
+Suite de Tests - Fase RED
+- Test 1: [nombre] ❌ (falla como se espera)
+- Test 2: [nombre] ❌ (falla como se espera)
+- Test 3: [nombre] ❌ (falla como se espera)
+- Test 4: [nombre] ❌ (falla como se espera)
+- Test 5: [nombre] ❌ (falla como se espera)
+
+═══════════════════════════════════════════════════════════════════
+✅ AGENTE: tdd-architect | TAREA COMPLETADA
+───────────────────────────────────────────────────────────────────
+📦 Artefactos generados:
+  - Archivo: tests/test_[componente].py ✅
+  - Total de tests: 5 ✅
+  - Estado: Todos en fase RED (esperado) ✅
+  - Documentación: Docstrings ESCENARIO/COMPORTAMIENTO/PROPÓSITO ✅
+═══════════════════════════════════════════════════════════════════
+```
+
 ## 5. Límites y Restricciones
 
 ### Siempre hacer:

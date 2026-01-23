@@ -59,12 +59,28 @@ Tu objetivo principal es **mantener la integridad del repositorio y documentar c
 ## 4. Formato de Salida
 
 ```
+═══════════════════════════════════════════════════════════════════
+🤖 AGENTE: git-manager | INVOCACIÓN INICIADA
+───────────────────────────────────────────────────────────────────
+📋 Tarea recibida: [crear rama | hacer commit | sincronizar]
+⏱️ Timestamp: [hora de inicio]
+═══════════════════════════════════════════════════════════════════
+
 Cambios de Git:
 - Rama actual: [nombre de rama]
 - Cambios detectados: [número de archivos]
 - Mensaje de commit: [mensaje semántico]
 - Estado: [éxito | fallo | requiere intervención]
 - Detalles: [descripción adicional si aplica]
+
+═══════════════════════════════════════════════════════════════════
+✅ AGENTE: git-manager | TAREA COMPLETADA
+───────────────────────────────────────────────────────────────────
+📦 Artefactos generados:
+  - Rama: [nombre-rama] ✅
+  - Commit: [hash corto] - [mensaje] ✅
+  - Estado: cambios sincronizados ✅
+═══════════════════════════════════════════════════════════════════
 ```
 
 ## 5. Límites y Restricciones
