@@ -1,7 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "opencode",
-  "model": "github-copilot/claude-haiku-4.5",
+  "model": "{env:OPENCODE_MODEL_REGULAR}",
+  "small_model": "{env:OPENCODE_MODEL_LOW}",
   "autoupdate": true,
   "permission": {
     "bash": "ask",
@@ -36,6 +37,7 @@
   "agent": {
     "data-engineer": {
       "mode": "primary",
+      "model": "{env:OPENCODE_MODEL_THINKING}",
       "permission": {
         "task": {
           "*": "deny",
@@ -49,23 +51,23 @@
     },
     "git-manager": {
       "mode": "subagent",
-      "model": "github-copilot/gemini-3-flash-preview"
+      "model": "{env:OPENCODE_MODEL_LOW}"
     },
     "tdd-architect": {
       "mode": "subagent",
-      "model": "github-copilot/claude-opus-4.5"
+      "model": "{env:OPENCODE_MODEL_THINKING}"
     },
     "python-coder": {
       "mode": "subagent",
-      "model": "github-copilot/gemini-3-flash-preview"
+      "model": "{env:OPENCODE_MODEL_REGULAR}"
     },
     "sql-specialist": {
       "mode": "subagent",
-      "model": "github-copilot/claude-haiku-4.5"
+      "model": "{env:OPENCODE_MODEL_THINKING}"
     },
     "code-reviewer": {
       "mode": "subagent",
-      "model": "github-copilot/gemini-3-flash-preview"
+      "model": "{env:OPENCODE_MODEL_REGULAR}"
     }
   },
   "keybinds": {
