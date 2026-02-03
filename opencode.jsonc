@@ -13,7 +13,7 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+        "CONTEXT7_API_KEY": "ctx7sk-e1129563-14f6-4ece-9b1b-3b7de52f1efb"
       },
       "enabled": true
     }
@@ -48,19 +48,24 @@
       }
     },
     "git-manager": {
-      "mode": "subagent"
+      "mode": "subagent",
+      "model": "github-copilot/gemini-3-flash-preview"
     },
     "tdd-architect": {
-      "mode": "subagent"
+      "mode": "subagent",
+      "model": "github-copilot/claude-opus-4.5"
     },
     "python-coder": {
-      "mode": "subagent"
+      "mode": "subagent",
+      "model": "github-copilot/gemini-3-flash-preview"
     },
     "sql-specialist": {
-      "mode": "subagent"
+      "mode": "subagent",
+      "model": "github-copilot/claude-haiku-4.5"
     },
     "code-reviewer": {
-      "mode": "subagent"
+      "mode": "subagent",
+      "model": "github-copilot/gemini-3-flash-preview"
     }
   },
   "keybinds": {

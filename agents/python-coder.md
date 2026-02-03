@@ -1,7 +1,7 @@
 ---
 description: Especialista en desarrollo Python que cumple estrictamente PEP 8 y estándares de tipado
 mode: subagent
-model: github-copilot/grok-code-fast-1
+model: github-copilot/gemini-3-flash-preview
 temperature: 0.1
 tools:
   read: true

@@ -1,7 +1,7 @@
 ---
 description: Especialista en control de versiones, gestión de ramas y mensajes de commit semánticos
 mode: subagent
-model: openrouter/x-ai/grok-code-fast-1
+model: github-copilot/gemini-3-flash-preview
 temperature: 0.1
 tools:
   read: true
