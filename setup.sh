@@ -97,20 +97,24 @@ select_tool() {
 
 get_project_path() {
     step_header "${ICO_PATH} RUTA DE DESTINO"
-    echo -e "${P_BLUE}┃${NC}   ${P_GRAY}Ingresa ruta absoluta o [~] para Home${NC}"
-    echo -ne "${P_BLUE}┃${NC}   ${P_MAGENTA}❯${NC} "
-    read PROJECT_PATH
+    
+    # Path fijo usando $HOME (compatible macOS/Linux/WSL)
+    DEFAULT_PATH="${HOME}/.config/opencode"
+    
+    # Permitir sobrescribir con variable de entorno
+    PROJECT_PATH="${OPENCODE_CONFIG_PATH:-$DEFAULT_PATH}"
+    
+    # Expandir ~ si el usuario lo usó en la variable de entorno
     PROJECT_PATH="${PROJECT_PATH/#\~/$HOME}"
     
+    echo -e "${P_BLUE}┃${NC}   ${P_GRAY}Destino configurado:${NC}"
+    echo -e "${P_BLUE}┃${NC}   ${P_LIME}${PROJECT_PATH}${NC}"
+    
     if [ ! -d "$PROJECT_PATH" ]; then
-        echo -ne "${P_BLUE}┃${NC}   ${P_GOLD}⚠ No existe. ¿Crear? [s/N]: ${NC}"
-        read create_dir
-        if [[ "$create_dir" =~ ^[sS]$ ]]; then
-            mkdir -p "$PROJECT_PATH"
-        else
-            echo "Abortado."; exit 1
-        fi
+        echo -e "${P_BLUE}┃${NC}   ${P_GOLD}⚠ Creando directorio...${NC}"
+        mkdir -p "$PROJECT_PATH"
     fi
+    
     echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Ruta fijada: ${PROJECT_PATH}${NC}"
 }
 
