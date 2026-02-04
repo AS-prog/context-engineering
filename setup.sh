@@ -90,7 +90,12 @@ select_tool() {
     done
     echo -e "${P_BLUE}┃${NC}"
     echo -ne "${P_BLUE}┃${NC}   ${P_MAGENTA}❯${NC} "
-    read choice
+    # Leer desde /dev/tty si está disponible (para no interferir con stdin)
+    if [ -t 0 ]; then
+        read choice
+    else
+        read choice < /dev/tty 2>/dev/null || choice="1"
+    fi
     SELECTED_TOOL="${TOOLS[$((choice-1))]}"
     echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Herramienta: ${SELECTED_TOOL}${NC}"
 }
@@ -150,7 +155,12 @@ create_links() {
         mkdir -p "$DEST_FOLDER"
         
         # Búsqueda recursiva excluyendo carpetas 'docs'
-        find "$SOURCE_FOLDER" -type f | grep -v "/docs/" | while read -r file; do
+        # Guardar lista de archivos en variable para evitar problemas con stdin
+        files_list=$(find "$SOURCE_FOLDER" -type f | grep -v "/docs/")
+        
+        while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            
             # Calcular ruta relativa para replicar estructura
             relative_path="${file#$SOURCE_FOLDER/}"
             dest_file="$DEST_FOLDER/$relative_path"
@@ -161,9 +171,9 @@ create_links() {
             # Crear o sobrescribir symlink
             if ln -sf "$file" "$dest_file"; then
                 echo -e "${P_BLUE}┃${NC}     ${P_DARK}⚡${NC} ${P_GRAY}${relative_path}${NC}"
-                ((SUCCESS_COUNT++))
+                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
             fi
-        done
+        done <<< "$files_list"
     done
     
     # Enlace de configuración extra si es OpenCode
