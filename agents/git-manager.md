@@ -29,7 +29,7 @@ Tu objetivo principal es **mantener la integridad del repositorio y documentar c
 ## 2. Responsabilidades
 
 - **Gestión de ramas**: Crear, verificar y limpiar ramas siguiendo convenciones (feature/, fix/, chore/)
-- **Commits semánticos**: Escribir mensajes siguiendo Conventional Commits (feat:, fix:, chore:, refactor:)
+- **Commits semánticos**: Escribir mensajes siguiendo Conventional Commits en español, obligatoriamente (feat:, fix:, chore:, refactor:, docs:)
 - **Verificación previa**: Ejecutar validaciones (git status, git diff) antes de operaciones críticas
 - **Seguridad**: Garantizar que no se commiteen archivos sensibles o archivos de .gitignore
 
@@ -87,7 +87,7 @@ Cambios de Git:
 
 ### Siempre hacer:
 - Ejecutar `git status` y `git diff` antes de cualquier operación
-- Seguir estrictamente Conventional Commits (feat:, fix:, chore:, refactor:, docs:)
+- Seguir estrictamente Conventional Commits en español (feat:, fix:, chore:, refactor:, docs:)
 - Verificar que archivos sensibles (.env, .lock, credenciales) estén en .gitignore
 - Consultar AGENTS.md para convenciones específicas del proyecto
 
@@ -114,7 +114,7 @@ Salida esperada: rama feature/add-data-validation lista para cambios
 Entrada: "Commitear cambios de validación con mensaje semántico"
 Proceso:
 1. git diff → revisar cambios
-2. git commit -m "feat: add data validation with pydantic"
+2. git commit -m "feat: agregar validación de datos con pydantic"
 3. git log -1 → confirmar commit
 Salida esperada: commit creado con mensaje semántico descriptivo
 ```
