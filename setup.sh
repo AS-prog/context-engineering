@@ -145,6 +145,7 @@ select_folders() {
 create_links() {
     step_header "${ICO_SYNC} EJECUCIÓN DE ENLACES (Recursivo)"
     SUCCESS_COUNT=0
+    REPLACED_COUNT=0
     
     for folder in "${SELECTED_FOLDERS[@]}"; do
         echo -e "${P_BLUE}┃${NC}   ${BOLD}📦 ${folder}${NC}"
@@ -168,6 +169,13 @@ create_links() {
             # Crear subdirectorios si es necesario
             mkdir -p "$(dirname "$dest_file")"
             
+            # Verificar si existe un archivo regular (no symlink) y eliminarlo
+            if [ -f "$dest_file" ] && [ ! -L "$dest_file" ]; then
+                echo -e "${P_BLUE}┃${NC}     ${P_GOLD}📝 Reemplazando archivo existente: ${relative_path}${NC}"
+                rm -f "$dest_file"
+                REPLACED_COUNT=$((REPLACED_COUNT + 1))
+            fi
+            
             # Crear o sobrescribir symlink
             if ln -sf "$file" "$dest_file"; then
                 echo -e "${P_BLUE}┃${NC}     ${P_DARK}⚡${NC} ${P_GRAY}${relative_path}${NC}"
@@ -175,6 +183,10 @@ create_links() {
             fi
         done <<< "$files_list"
     done
+    
+    if [ $REPLACED_COUNT -gt 0 ]; then
+        echo -e "${P_BLUE}┃${NC}   ${P_GOLD}⚠ ${REPLACED_COUNT} archivos existentes fueron reemplazados${NC}"
+    fi
     
     # Enlace de configuración extra si es OpenCode
     if [ "$SELECTED_TOOL" = "OpenCode" ] && [ -f "$SCRIPT_DIR/opencode.jsonc" ]; then
