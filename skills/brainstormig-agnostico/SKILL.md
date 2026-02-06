@@ -5,6 +5,37 @@ description: "Use when the user wants to develop a raw idea, project, or concept
 
 # Brainstorming Agnóstico
 
+## Configuration
+
+Este skill requiere la variable de entorno `OBSIDIAN_VAULT_PATH` para escribir los diseños en tu vault de Obsidian de manera agnóstica.
+
+### Configuración por Sistema Operativo:
+
+**Linux/Mac:**
+```bash
+# Agregar a ~/.bashrc, ~/.zshrc, o ~/.bash_profile:
+export OBSIDIAN_VAULT_PATH="/home/tu-usuario/obsidian-vault"
+
+# Para aplicar cambios:
+source ~/.bashrc  # o ~/.zshrc
+```
+
+**Windows (PowerShell):**
+```powershell
+# Agregar a tu perfil de PowerShell ($PROFILE):
+[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\tu-usuario\obsidian-vault", "User")
+
+# O temporalmente en la sesión actual:
+$env:OBSIDIAN_VAULT_PATH = "C:\Users\tu-usuario\obsidian-vault"
+```
+
+**Windows (CMD):**
+```cmd
+setx OBSIDIAN_VAULT_PATH "C:\Users\tu-usuario\obsidian-vault"
+```
+
+> **Nota:** Si la variable no está definida, el diseño se guardará en `./docs/plans/` (fallback local).
+
 ## Overview
 Transforma ideas abstractas en diseños estructurados mediante un diálogo iterativo, eliminando la complejidad innecesaria y asegurando la claridad antes de la ejecución.
 
@@ -27,4 +58,7 @@ Transforma ideas abstractas en diseños estructurados mediante un diálogo itera
 
 ## After the Design
 - Usa la plantilla ubicada en `./brainstormig-agnostico-template.md` (o el nombre exacto que le hayas dado).
-- Escribe el diseño validado en `docs/plans/YYYY-MM-DD-<topic>-design.md`.
+- Escribe el diseño validado en la ruta determinada por la variable de entorno `OBSIDIAN_VAULT_PATH`:
+  - **Ruta completa:** `$OBSIDIAN_VAULT_PATH/plans/YYYY-MM-DD-<topic>-design.md`
+  - **Fallback:** Si `OBSIDIAN_VAULT_PATH` no está definida, usar `./docs/plans/YYYY-MM-DD-<topic>-design.md`
+- Asegúrate de crear el directorio `plans/` dentro del vault si no existe.
