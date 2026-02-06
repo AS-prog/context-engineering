@@ -90,12 +90,21 @@ select_tool() {
     done
     echo -e "${P_BLUE}┃${NC}"
     echo -ne "${P_BLUE}┃${NC}   ${P_MAGENTA}❯${NC} "
-    # Leer desde /dev/tty si está disponible (para no interferir con stdin)
+    
+    # Leer entrada del usuario con soporte para modo no interactivo
+    local choice
     if [ -t 0 ]; then
+        # Terminal interactivo: leer directamente desde stdin
         read choice
     else
-        read choice < /dev/tty 2>/dev/null || choice="1"
+        # Modo no interactivo (stdin es pipe o redirección)
+        # Intentar leer desde stdin con timeout, si falla usar default
+        if ! read -t 1 choice 2>/dev/null; then
+            choice="1"
+        fi
+        echo "$choice"  # Mostrar la elección en modo no interactivo
     fi
+    
     SELECTED_TOOL="${TOOLS[$((choice-1))]}"
     echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Herramienta: ${SELECTED_TOOL}${NC}"
 }
@@ -155,9 +164,16 @@ create_links() {
         # Asegurar que el directorio base exista en el destino
         mkdir -p "$DEST_FOLDER"
         
-        # Búsqueda recursiva excluyendo carpetas 'docs'
+        # Búsqueda recursiva excluyendo carpetas 'docs' DENTRO de los módulos
+        # (pero no excluir la carpeta top-level 'docs' si es la que se está procesando)
         # Guardar lista de archivos en variable para evitar problemas con stdin
-        files_list=$(find "$SOURCE_FOLDER" -type f | grep -v "/docs/")
+        if [ "$folder" = "docs" ]; then
+            # Si estamos procesando la carpeta 'docs', incluir todos sus archivos
+            files_list=$(find "$SOURCE_FOLDER" -type f)
+        else
+            # Para otros módulos, excluir subdirectorios 'docs'
+            files_list=$(find "$SOURCE_FOLDER" -type f | grep -v "/$folder/docs/")
+        fi
         
         while IFS= read -r file; do
             [ -z "$file" ] && continue
