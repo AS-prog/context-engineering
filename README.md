@@ -14,11 +14,16 @@ Este repositorio organiza **agentes especializados** para ejecutar workflows com
 
 ## 🤖 Agentes Disponibles
 
+### Agentes de Ingeniería de Datos
 - **data-engineer.md** - Orquestador principal (PRIMARY)
 - **python-coder.md** - Implementación Python con PEP 8 (Subagent)
 - **tdd-architect.md** - Diseño de test suites (Subagent)
 - **sql-specialist.md** - Especialista SQL (Subagent)
 - **git-manager.md** - Control de versiones (Subagent)
+
+### Skills de Brainstorming
+- **brainstorming-agnostico** - Desarrollo de ideas abstractas en diseños estructurados
+- **brainstorming-codigo** - Exploración técnica antes de implementación
 
 ## 📚 Documentación
 
@@ -27,6 +32,25 @@ Este repositorio organiza **agentes especializados** para ejecutar workflows com
 - **agents/docs/AGENTS_REFERENCE.md** - Documentación completa
 - **agents/docs/INDEX.md** - Índice de agentes
 - **docs/PRUEBA_ORQUESTACION.md** - Guía para probar la orquestación de agentes
+
+## ⚙️ Configuración
+
+### Variable de Entorno para Skills de Brainstorming
+
+Los skills de brainstorming requieren la variable `OBSIDIAN_VAULT_PATH` para escribir diseños en tu vault:
+
+```bash
+# Linux/Mac
+export OBSIDIAN_VAULT_PATH="/ruta/a/tu/obsidian-vault"
+
+# Windows (PowerShell)
+$env:OBSIDIAN_VAULT_PATH = "C:\Users\tu-usuario\obsidian-vault"
+
+# Windows (CMD)
+setx OBSIDIAN_VAULT_PATH "C:\Users\tu-usuario\obsidian-vault"
+```
+
+> Si no está definida, los diseños se guardarán en `./docs/plans/`
 
 ## 🚀 Quick Start
 

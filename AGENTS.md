@@ -34,13 +34,24 @@ agents/
     ├── QUICKSTART.md         # Inicio en 5 minutos
     ├── AGENTS_REFERENCE.md   # Documentación completa
     └── INDEX.md              # Índice de agentes
+
+skills/
+├── brainstormig-agnostico/   # Skill para ideas abstractas
+│   ├── SKILL.md
+│   └── brainstormig-agnostico-template.md
+├── brainstormig-codigo/      # Skill para diseño técnico
+│   ├── SKILL.md
+│   └── brainstorming-code-template.md
+└── ...                       # Otros skills
 ```
 
 ---
 
 ## 🤖 Agentes Disponibles
 
-### 1. **data-engineer.md** - Orquestador Principal
+### Agentes de Ingeniería de Datos
+
+#### 1. **data-engineer.md** - Orquestador Principal
 - **Tipo**: Primary Agent
 - **Modelo**: Claude 3.5 Sonnet
 - **Temperatura**: 0.3
@@ -135,6 +146,109 @@ agents/
 - Evaluar test coverage
 
 **Invocación**: Invocado por @data-engineer como revisión final
+
+---
+
+## 🧠 Skills de Brainstorming
+
+Además de los agentes de ingeniería de datos, el repositorio incluye **skills especializados** para el desarrollo de ideas y diseño antes de la implementación.
+
+### ¿Qué son los Skills?
+
+Los skills son módulos de contexto que se activan automáticamente cuando el usuario quiere desarrollar una idea o concepto. Facilitan un diálogo colaborativo para refinar intenciones y explorar alternativas antes de la ejecución.
+
+### Skills Disponibles
+
+#### **brainstorming-agnostico**
+**Ubicación**: `skills/brainstormig-agnostico/SKILL.md`
+
+**Cuándo usarlo**: Cuando tienes una idea abstracta, proyecto o concepto que necesita ser estructurado antes de implementarlo.
+
+**Proceso**:
+1. Comprensión profunda de la idea
+2. Exploración de 2-3 enfoques distintos
+3. Presentación incremental del diseño
+4. Salida estandarizada usando plantilla
+
+**Salida**: Diseño validado en formato Markdown usando la plantilla del skill.
+
+---
+
+#### **brainstorming-codigo**
+**Ubicación**: `skills/brainstormig-codigo/SKILL.md`
+
+**Cuándo usarlo**: DEBE usarse antes de cualquier trabajo creativo - creación de funciones, componentes, funcionalidades o modificaciones.
+
+**Proceso**:
+1. Entender la idea técnica y contexto actual
+2. Explorar 2-3 enfoques técnicos
+3. Presentación fragmentada del diseño
+4. Documentación del diseño validado
+
+**Salida**: Especificación técnica completa lista para implementación.
+
+---
+
+## ⚙️ Configuración
+
+### Variable de Entorno OBSIDIAN_VAULT_PATH
+
+Los skills de brainstorming pueden escribir diseños directamente en tu **Obsidian Vault** para mantener tu knowledge base actualizada. Esto requiere configurar una variable de entorno.
+
+#### ¿Por qué es necesaria?
+
+- Permite escritura agnóstica del sistema operativo (Linux, Mac, Windows)
+- Cada máquina puede tener su propia ruta al vault
+- Los diseños se integran con tu sistema de notas personal
+
+#### Configuración por Sistema Operativo
+
+**Linux/Mac:**
+```bash
+# Agregar a ~/.bashrc, ~/.zshrc, o ~/.bash_profile:
+export OBSIDIAN_VAULT_PATH="/home/tu-usuario/obsidian-vault"
+
+# Para aplicar cambios:
+source ~/.bashrc  # o ~/.zshrc
+```
+
+**Windows (PowerShell):**
+```powershell
+# Agregar a tu perfil de PowerShell ($PROFILE):
+[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\tu-usuario\obsidian-vault", "User")
+
+# O temporalmente en la sesión actual:
+$env:OBSIDIAN_VAULT_PATH = "C:\Users\tu-usuario\obsidian-vault"
+```
+
+**Windows (CMD):**
+```cmd
+setx OBSIDIAN_VAULT_PATH "C:\Users\tu-usuario\obsidian-vault"
+```
+
+#### Ruta de Salida
+
+Con la variable configurada, los skills escribirán en:
+```
+$OBSIDIAN_VAULT_PATH/plans/YYYY-MM-DD-<topic>-design.md
+```
+
+**Fallback**: Si `OBSIDIAN_VAULT_PATH` no está definida, el diseño se guardará localmente en:
+```
+./docs/plans/YYYY-MM-DD-<topic>-design.md
+```
+
+#### Verificación
+
+```bash
+# Verificar que la variable está configurada:
+echo $OBSIDIAN_VAULT_PATH  # Linux/Mac
+# o
+$env:OBSIDIAN_VAULT_PATH   # PowerShell
+
+# Crear directorio plans si no existe:
+mkdir -p "$OBSIDIAN_VAULT_PATH/plans"
+```
 
 ---
 
@@ -434,6 +548,6 @@ cat agents/docs/QUICKSTART.md
 
 ---
 
-**Editado**: Jan 22, 2025  
+**Editado**: Feb 06, 2026  
 **Mantenedor**: Equipo de Ingeniería de Contexto  
 **Licencia**: Consultar repositorio principal

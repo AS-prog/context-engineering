@@ -252,6 +252,49 @@ REFERENCIAS:
 
 ---
 
+## 🧠 Skills de Brainstorming
+
+Además de los agentes, el sistema incluye **skills especializados** para desarrollar ideas antes de la implementación.
+
+### ¿Qué son?
+
+Skills son módulos de contexto que facilitan un diálogo colaborativo para refinar ideas y explorar alternativas antes de ejecutar código.
+
+### Skills Disponibles
+
+**1. brainstorming-agnostico**
+- **Uso**: Ideas abstractas, proyectos o conceptos
+- **Proceso**: Diálogo iterativo → 2-3 enfoques → Diseño estructurado
+- **Salida**: `$OBSIDIAN_VAULT_PATH/plans/YYYY-MM-DD-<topic>-design.md`
+
+**2. brainstorming-codigo**  
+- **Uso**: Diseño técnico antes de implementar
+- **Proceso**: Contexto → Enfoques técnicos → Diseño validado
+- **Salida**: `$OBSIDIAN_VAULT_PATH/plans/YYYY-MM-DD-<topic>-design.md`
+
+### Configuración de OBSIDIAN_VAULT_PATH
+
+Los skills escriben diseños en tu vault de Obsidian. Configura la variable de entorno:
+
+**Linux/Mac:**
+```bash
+export OBSIDIAN_VAULT_PATH="/home/tu-usuario/obsidian-vault"
+```
+
+**Windows (PowerShell):**
+```powershell
+$env:OBSIDIAN_VAULT_PATH = "C:\Users\tu-usuario\obsidian-vault"
+```
+
+**Windows (CMD):**
+```cmd
+setx OBSIDIAN_VAULT_PATH "C:\Users\tu-usuario\obsidian-vault"
+```
+
+> **Fallback**: Si no está definida, guarda en `./docs/plans/`
+
+---
+
 ## 🎯 Mejores Prácticas
 
 ### ✅ Haz

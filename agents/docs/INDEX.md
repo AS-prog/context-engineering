@@ -1,7 +1,7 @@
 # 📚 Índice de Agentes OpenCode - Ingeniería de Datos
 
 **Versión**: 1.0  
-**Última actualización**: Jan 22, 2025  
+**Última actualización**: Feb 06, 2026  
 **Ubicación**: `~/.config/opencode/agents/`
 
 ---
@@ -97,39 +97,35 @@
 
 ---
 
-### 3. 🟢 **git-manager.md** (3.2K)
-**Tipo**: Primary | **Modelo**: Google Gemini 2.0 Flash | **Temp**: 0.1
+## 🧠 Skills de Brainstorming
 
-**Quién es**: Especialista en Control de Versiones  
-**Qué hace**: Gestiona ramas, commits semánticos  
-**Cuándo usarlo**: Para operaciones Git (crear ramas, commits, push)
+### **brainstorming-agnostico** (4.2K)
+**Tipo**: Skill | **Uso**: Desarrollo de ideas abstractas
 
-**Herramientas**: read, edit, bash (ask), glob, grep  
-**Especial**: Permisos granulares para git status/diff (allow)
+**Cuándo usarlo**: Cuando tienes una idea abstracta, proyecto o concepto que necesita ser estructurado antes de implementarlo.
 
----
+**Proceso**:
+1. Comprensión profunda de la idea
+2. Exploración de 2-3 enfoques distintos
+3. Presentación incremental del diseño
+4. Salida estandarizada usando plantilla
 
-### 4. 🔵 **python-coder.md** (3.4K)
-**Tipo**: Primary | **Modelo**: Google Gemini 2.5 Flash Lite | **Temp**: 0.1
-
-**Quién es**: Desarrollador Senior de Python  
-**Qué hace**: Implementa código Python conforme a PEP 8  
-**Cuándo usarlo**: Para implementar código basado en tests
-
-**Herramientas**: read, write, edit, bash, glob, grep  
-**Especial**: Código en inglés, docstrings en español
+**Requiere**: Variable de entorno `OBSIDIAN_VAULT_PATH` (opcional, usa fallback local)
 
 ---
 
-### 5. 🟣 **tdd-architect.md** (3.9K)
-**Tipo**: Subagent | **Modelo**: Claude Sonnet 3.5 | **Temp**: 0.0
+### **brainstorming-codigo** (4.5K)
+**Tipo**: Skill | **Uso**: Diseño técnico antes de implementación
 
-**Quién es**: Ingeniero de QA y Software Senior  
-**Qué hace**: Diseña suites de pruebas con TDD  
-**Cuándo usarlo**: Para crear tests documentados (fase RED)
+**Cuándo usarlo**: DEBE usarse antes de cualquier trabajo creativo - creación de funciones, componentes, funcionalidades o modificaciones.
 
-**Herramientas**: read, write, edit, bash, glob, grep  
-**Especial**: Docstrings con ESCENARIO/COMPORTAMIENTO/PROPÓSITO
+**Proceso**:
+1. Entender la idea técnica y contexto actual
+2. Explorar 2-3 enfoques técnicos
+3. Presentación fragmentada del diseño
+4. Documentación del diseño validado
+
+**Requiere**: Variable de entorno `OBSIDIAN_VAULT_PATH` (opcional, usa fallback local)
 
 ---
 
@@ -189,24 +185,41 @@ cp _template.md mi-agente.md
 
 ### Árbol de Archivos
 ```
-~/.config/opencode/agents/
-├── 📘 data-engineer.md          ⭐ PUNTO DE ENTRADA
-├── 🔍 sql-specialist.md         Especialista SQL
-├── 📦 git-manager.md
-├── 🐍 python-coder.md
-├── 🧪 tdd-architect.md
-├── 📋 _template.md              (Plantilla para nuevos)
-├── 📚 AGENTS_REFERENCE.md       (Documentación actualizada)
-├── 🚀 QUICKSTART.md             (Guía rápida)
-├── ⚡ CHEATSHEET.md             (Referencia rápida)
-└── 📑 INDEX.md                  (Este archivo)
+context-engineering/
+├── agents/
+│   ├── 📘 data-engineer.md          ⭐ PUNTO DE ENTRADA
+│   ├── 🔍 sql-specialist.md         Especialista SQL
+│   ├── 📦 git-manager.md
+│   ├── 🐍 python-coder.md
+│   ├── 🧪 tdd-architect.md
+│   ├── 📋 _template.md              (Plantilla para nuevos)
+│   └── docs/
+│       ├── 📚 AGENTS_REFERENCE.md       (Documentación actualizada)
+│       ├── 🚀 QUICKSTART.md             (Guía rápida)
+│       ├── ⚡ CHEATSHEET.md             (Referencia rápida)
+│       └── 📑 INDEX.md                  (Este archivo)
+│
+├── skills/
+│   ├── 🧠 brainstormig-agnostico/       (Skill para ideas abstractas)
+│   │   ├── SKILL.md
+│   │   └── brainstormig-agnostico-template.md
+│   ├── 💡 brainstormig-codigo/          (Skill para diseño técnico)
+│   │   ├── SKILL.md
+│   │   └── brainstorming-code-template.md
+│   └── ...                               (Otros skills)
+│
+└── docs/
+    ├── ARCHITECTURE.md
+    ├── EXAMPLES.md
+    └── ...
 ```
 
 ### Estadísticas
-- **Total de archivos**: 10
-- **Tamaño total**: ~65K
+- **Total de archivos**: ~25
+- **Tamaño total**: ~80K
 - **Agentes**: 5 (1 principal + 4 subagentes)
-- **Documentación**: 4
+- **Skills**: 2+ (brainstorming agnóstico, brainstorming código)
+- **Documentación**: 5+
 
 ---
 
@@ -350,8 +363,8 @@ para mejorar [aspecto] manteniendo [requisito]"
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 1.1 | 2026-02-06 | Agregados skills de brainstorming + configuración OBSIDIAN_VAULT_PATH |
 | 1.0 | 2025-01-22 | Creación inicial con data-engineer + documentación |
-| - | - | - |
 
 ---
 
