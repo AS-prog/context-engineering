@@ -203,27 +203,29 @@ Los skills de brainstorming pueden escribir diseños directamente en tu **Obsidi
 
 #### Configuración por Sistema Operativo
 
-**Linux/Mac:**
+**Linux/Mac (Zsh):**
 ```bash
-# Agregar a ~/.bashrc, ~/.zshrc, o ~/.bash_profile:
-export OBSIDIAN_VAULT_PATH="/home/andresrsotelo/projects/docs/delphi_project"
+# Agregar al final de ~/.zshrc:
+# Detectar sistema operativo y configurar ruta del vault
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    # Linux (Linode)
+    export OBSIDIAN_VAULT_PATH="$HOME/projects/docs/delphi_project"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    export OBSIDIAN_VAULT_PATH="$HOME/projects/docs/delphi_project"
+fi
 
 # Para aplicar cambios:
-source ~/.bashrc  # o ~/.zshrc
+source ~/.zshrc
 ```
 
-**Windows (PowerShell):**
-```powershell
-# Agregar a tu perfil de PowerShell ($PROFILE):
-[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\andresrsotelo\projects\docs\delphi_project", "User")
+**Linux (Bash):**
+```bash
+# Agregar al final de ~/.bashrc:
+export OBSIDIAN_VAULT_PATH="$HOME/projects/docs/delphi_project"
 
-# O temporalmente en la sesión actual:
-$env:OBSIDIAN_VAULT_PATH = "C:\Users\andresrsotelo\projects\docs\delphi_project"
-```
-
-**Windows (CMD):**
-```cmd
-setx OBSIDIAN_VAULT_PATH "C:\Users\andresrsotelo\projects\docs\delphi_project"
+# Para aplicar cambios:
+source ~/.bashrc
 ```
 
 #### Integración con Vault de Obsidian
