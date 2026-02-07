@@ -14,7 +14,7 @@ Este skill requiere la variable de entorno `OBSIDIAN_VAULT_PATH` para escribir l
 **Linux/Mac:**
 ```bash
 # Agregar a ~/.bashrc, ~/.zshrc, o ~/.bash_profile:
-export OBSIDIAN_VAULT_PATH="/home/tu-usuario/obsidian-vault"
+export OBSIDIAN_VAULT_PATH="/home/andresrsotelo/projects/docs/delphi_project"
 
 # Para aplicar cambios:
 source ~/.bashrc  # o ~/.zshrc
@@ -23,18 +23,18 @@ source ~/.bashrc  # o ~/.zshrc
 **Windows (PowerShell):**
 ```powershell
 # Agregar a tu perfil de PowerShell ($PROFILE):
-[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\tu-usuario\obsidian-vault", "User")
+[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\andresrsotelo\projects\docs\delphi_project", "User")
 
 # O temporalmente en la sesión actual:
-$env:OBSIDIAN_VAULT_PATH = "C:\Users\tu-usuario\obsidian-vault"
+$env:OBSIDIAN_VAULT_PATH = "C:\Users\andresrsotelo\projects\docs\delphi_project"
 ```
 
 **Windows (CMD):**
 ```cmd
-setx OBSIDIAN_VAULT_PATH "C:\Users\tu-usuario\obsidian-vault"
+setx OBSIDIAN_VAULT_PATH "C:\Users\andresrsotelo\projects\docs\delphi_project"
 ```
 
-> **Nota:** Si la variable no está definida, el diseño se guardará en `./docs/plans/` (fallback local).
+> **Nota:** Si la variable no está definida, el diseño se guardará en `$OBSIDIAN_VAULT_PATH/01_borradores/` usando el formato del vault.
 
 ## 📖 Resumen
 Ayuda a transformar ideas técnicas en diseños y especificaciones completas a través de un diálogo colaborativo natural.
@@ -42,7 +42,7 @@ Ayuda a transformar ideas técnicas en diseños y especificaciones completas a t
 ## 🛠️ El Proceso
 
 ### Fase 1: Entender la Idea
-- **Contexto actual:** Revisar primero el estado del proyecto (archivos, documentación, commits recientes).
+- **Contexto actual:** Revisar primero el estado del proyecto (archivos, documentación, commits recientes) y notas relacionadas en `01_borradores/` y `02_notas/`.
 - **Iteración atómica:** Hacer preguntas de una en una para refinar la idea.
 - **Preferencias:** Priorizar preguntas de opción múltiple para agilizar la toma de decisiones.
 - **Foco:** Comprender el propósito, las restricciones y los criterios de éxito.
@@ -63,8 +63,21 @@ Ayuda a transformar ideas técnicas en diseños y especificaciones completas a t
 
 ## 🏁 Post-Diseño
 - **Documentación:** Escribir el diseño validado en la ruta determinada por la variable de entorno `OBSIDIAN_VAULT_PATH`:
-  - **Ruta completa:** `$OBSIDIAN_VAULT_PATH/plans/YYYY-MM-DD-<topic>-design.md`
-  - **Fallback:** Si `OBSIDIAN_VAULT_PATH` no está definida, usar `./docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Usa la plantilla ubicada en `./brainstorming-code-template.md` (o el nombre exacto que le hayas dado).
+  - **Ruta completa:** `$OBSIDIAN_VAULT_PATH/01_borradores/<topic>_YYYYMMDD.md`
+  - **Fallback:** Si `OBSIDIAN_VAULT_PATH` no está definida, usar `./docs/plans/<topic>_YYYYMMDD.md`
+- Usa la plantilla `nota_en_desarrollo.md` ubicada en `$OBSIDIAN_VAULT_PATH/00_plantillas/nota_en_desarrollo.md`.
+- **Metadatos YAML requeridos:**
+  ```yaml
+  ---
+  tema: <topic>
+  fecha: "YYYY-MM-DD"
+  curso: <categoria_tecnica>
+  categoria:
+    - desarrollo
+  estado: en_revision
+  version: 0.1
+  ---
+  ```
 - **Implementación:** Preguntar "¿Listo para configurar la implementación?" antes de proceder.
-- Asegúrate de crear el directorio `plans/` dentro del vault si no existe.
+- Asegúrate de que el directorio `01_borradores/` exista dentro del vault.
+- Nombre de archivo: usar formato `titulo_YYYYMMDD.md` (ej: `api_diseno_20260207.md`).

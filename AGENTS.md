@@ -206,7 +206,7 @@ Los skills de brainstorming pueden escribir diseños directamente en tu **Obsidi
 **Linux/Mac:**
 ```bash
 # Agregar a ~/.bashrc, ~/.zshrc, o ~/.bash_profile:
-export OBSIDIAN_VAULT_PATH="/home/tu-usuario/obsidian-vault"
+export OBSIDIAN_VAULT_PATH="/home/andresrsotelo/projects/docs/delphi_project"
 
 # Para aplicar cambios:
 source ~/.bashrc  # o ~/.zshrc
@@ -215,27 +215,48 @@ source ~/.bashrc  # o ~/.zshrc
 **Windows (PowerShell):**
 ```powershell
 # Agregar a tu perfil de PowerShell ($PROFILE):
-[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\tu-usuario\obsidian-vault", "User")
+[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\andresrsotelo\projects\docs\delphi_project", "User")
 
 # O temporalmente en la sesión actual:
-$env:OBSIDIAN_VAULT_PATH = "C:\Users\tu-usuario\obsidian-vault"
+$env:OBSIDIAN_VAULT_PATH = "C:\Users\andresrsotelo\projects\docs\delphi_project"
 ```
 
 **Windows (CMD):**
 ```cmd
-setx OBSIDIAN_VAULT_PATH "C:\Users\tu-usuario\obsidian-vault"
+setx OBSIDIAN_VAULT_PATH "C:\Users\andresrsotelo\projects\docs\delphi_project"
+```
+
+#### Integración con Vault de Obsidian
+
+Los skills están configurados para integrarse con la estructura del vault `delphi_project`:
+
+```
+delphi_project/
+├── 00_plantillas/
+│   ├── nota_base.md              # Plantilla para brainstorming-agnostico
+│   └── nota_en_desarrollo.md     # Plantilla para brainstorming-codigo
+├── 01_borradores/                # Salida de los skills
+└── 02_notas/                     # Notas finales completadas
 ```
 
 #### Ruta de Salida
 
 Con la variable configurada, los skills escribirán en:
-```
-$OBSIDIAN_VAULT_PATH/plans/YYYY-MM-DD-<topic>-design.md
-```
+- **Brainstorming Agnóstico**: `$OBSIDIAN_VAULT_PATH/01_borradores/<topic>_YYYYMMDD.md`
+  - Usa plantilla: `nota_base.md`
+  - Categoría: `borrador`
+  - Estado: `en_desarrollo`
+  
+- **Brainstorming Código**: `$OBSIDIAN_VAULT_PATH/01_borradores/<topic>_YYYYMMDD.md`
+  - Usa plantilla: `nota_en_desarrollo.md`
+  - Categoría: `desarrollo`
+  - Estado: `en_revision`
+
+**Formato de archivo**: `titulo_YYYYMMDD.md` (ej: `mi_proyecto_20260207.md`)
 
 **Fallback**: Si `OBSIDIAN_VAULT_PATH` no está definida, el diseño se guardará localmente en:
 ```
-./docs/plans/YYYY-MM-DD-<topic>-design.md
+./docs/plans/<topic>_YYYYMMDD.md
 ```
 
 #### Verificación
@@ -246,8 +267,9 @@ echo $OBSIDIAN_VAULT_PATH  # Linux/Mac
 # o
 $env:OBSIDIAN_VAULT_PATH   # PowerShell
 
-# Crear directorio plans si no existe:
-mkdir -p "$OBSIDIAN_VAULT_PATH/plans"
+# Verificar que el directorio de borradores existe:
+ls -la "$OBSIDIAN_VAULT_PATH/01_borradores/"
+```
 ```
 
 ---

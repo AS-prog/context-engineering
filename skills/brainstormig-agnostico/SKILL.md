@@ -14,7 +14,7 @@ Este skill requiere la variable de entorno `OBSIDIAN_VAULT_PATH` para escribir l
 **Linux/Mac:**
 ```bash
 # Agregar a ~/.bashrc, ~/.zshrc, o ~/.bash_profile:
-export OBSIDIAN_VAULT_PATH="/home/tu-usuario/obsidian-vault"
+export OBSIDIAN_VAULT_PATH="/home/andresrsotelo/projects/docs/delphi_project"
 
 # Para aplicar cambios:
 source ~/.bashrc  # o ~/.zshrc
@@ -23,25 +23,25 @@ source ~/.bashrc  # o ~/.zshrc
 **Windows (PowerShell):**
 ```powershell
 # Agregar a tu perfil de PowerShell ($PROFILE):
-[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\tu-usuario\obsidian-vault", "User")
+[Environment]::SetEnvironmentVariable("OBSIDIAN_VAULT_PATH", "C:\Users\andresrsotelo\projects\docs\delphi_project", "User")
 
 # O temporalmente en la sesión actual:
-$env:OBSIDIAN_VAULT_PATH = "C:\Users\tu-usuario\obsidian-vault"
+$env:OBSIDIAN_VAULT_PATH = "C:\Users\andresrsotelo\projects\docs\delphi_project"
 ```
 
 **Windows (CMD):**
 ```cmd
-setx OBSIDIAN_VAULT_PATH "C:\Users\tu-usuario\obsidian-vault"
+setx OBSIDIAN_VAULT_PATH "C:\Users\andresrsotelo\projects\docs\delphi_project"
 ```
 
-> **Nota:** Si la variable no está definida, el diseño se guardará en `./docs/plans/` (fallback local).
+> **Nota:** Si la variable no está definida, el diseño se guardará en `$OBSIDIAN_VAULT_PATH/01_borradores/` usando el formato del vault.
 
 ## Overview
 Transforma ideas abstractas en diseños estructurados mediante un diálogo iterativo, eliminando la complejidad innecesaria y asegurando la claridad antes de la ejecución.
 
 ## The Process
 1. **Comprensión Profunda:**
-   - Analizar notas previas relacionadas en el vault.
+   - Analizar notas previas relacionadas en el vault (revisar `01_borradores/` y `02_notas/`).
    - Hacer **una sola pregunta** a la vez para refinar la idea.
    - Priorizar preguntas de opción múltiple para agilizar la toma de decisiones.
 2. **Exploración de Enfoques:**
@@ -54,11 +54,23 @@ Transforma ideas abstractas en diseños estructurados mediante un diálogo itera
 ## Key Principles
 - **Una pregunta a la vez:** Evitar abrumar al usuario.
 - **YAGNI:** Eliminar funciones o pasos que no sean estrictamente necesarios para el éxito.
-- **Salida Estandarizada:** Al finalizar, aplicar obligatoriamente la plantilla `brainstorming-design-template`.
+- **Salida Estandarizada:** Al finalizar, aplicar obligatoriamente la plantilla del vault (`nota_base.md`).
 
 ## After the Design
-- Usa la plantilla ubicada en `./brainstormig-agnostico-template.md` (o el nombre exacto que le hayas dado).
+- Usa la plantilla `nota_base.md` ubicada en `$OBSIDIAN_VAULT_PATH/00_plantillas/nota_base.md`.
 - Escribe el diseño validado en la ruta determinada por la variable de entorno `OBSIDIAN_VAULT_PATH`:
-  - **Ruta completa:** `$OBSIDIAN_VAULT_PATH/plans/YYYY-MM-DD-<topic>-design.md`
-  - **Fallback:** Si `OBSIDIAN_VAULT_PATH` no está definida, usar `./docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Asegúrate de crear el directorio `plans/` dentro del vault si no existe.
+  - **Ruta completa:** `$OBSIDIAN_VAULT_PATH/01_borradores/<topic>_YYYYMMDD.md`
+  - **Fallback:** Si `OBSIDIAN_VAULT_PATH` no está definida, usar `./docs/plans/<topic>_YYYYMMDD.md`
+- **Metadatos YAML requeridos:**
+  ```yaml
+  ---
+  tema: <topic>
+  fecha: "YYYY-MM-DD"
+  curso: <categoria>
+  categoria:
+    - borrador
+  estado: en_desarrollo
+  ---
+  ```
+- Asegúrate de que el directorio `01_borradores/` exista dentro del vault.
+- Nombre de archivo: usar formato `titulo_YYYYMMDD.md` (ej: `mi_idea_20260207.md`).
