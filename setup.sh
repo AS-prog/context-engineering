@@ -149,6 +149,34 @@ get_openclaw_path() {
     echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Ruta fijada: ${OPENCLAW_PATH}${NC}"
 }
 
+deploy_openclaw_agents() {
+    step_header "${ICO_SYNC} INYECCIÓN DE AGENTES EN OPENCLAW"
+
+    local agent_count=0
+    SOURCE_AGENTS="$SCRIPT_DIR/agents/openclaw"
+    OPENCLAW_AGENTS_PATH="${HOME}/.openclaw/agents"
+
+    mkdir -p "$OPENCLAW_AGENTS_PATH"
+
+    if [ -d "$SOURCE_AGENTS" ]; then
+        for agent_file in "$SOURCE_AGENTS"/*.md; do
+            [ -f "$agent_file" ] || continue
+
+            agent_name=$(basename "$agent_file" .md)
+            dest_file="$OPENCLAW_AGENTS_PATH/$agent_name.md"
+
+            if ln -sf "$agent_file" "$dest_file"; then
+                echo -e "${P_BLUE}┃${NC}     ${P_DARK}⚡${NC} ${P_GRAY}Agente: ${agent_name}${NC}"
+                agent_count=$((agent_count + 1))
+            fi
+        done
+    fi
+
+    echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ ${agent_count} agentes inyectados${NC}"
+
+    SUCCESS_COUNT=$((SUCCESS_COUNT + agent_count))
+}
+
 deploy_openclaw_skills() {
     step_header "${ICO_SYNC} INYECCIÓN DE SKILLS EN OPENCLAW"
     
@@ -316,6 +344,7 @@ main() {
     # Manejo especial para Openclaw (solo inyecta skills)
     if [ "$SELECTED_TOOL" = "Openclaw" ]; then
         get_openclaw_path
+        deploy_openclaw_agents
         deploy_openclaw_skills
     else
         # Flujo normal para OpenCode y Claude Code
