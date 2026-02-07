@@ -14,6 +14,8 @@
 4. [Guía de Estilos de Código](#guía-de-estilos-de-código)
 5. [Convenciones del Proyecto](#convenciones-del-proyecto)
 6. [Flujos de Trabajo](#flujos-de-trabajo)
+7. [Verificación de Estándares de Agentes](#verificación-de-estándares-de-agentes)
+8. [Restricciones Críticas](#restricciones-críticas)
 
 ---
 
@@ -30,6 +32,7 @@ agents/
 ├── tdd-architect.md          # Diseño de test suites
 ├── sql-specialist.md         # Optimización y diseño SQL
 ├── code-reviewer.md          # Revisión de código
+├── config-guardian.md        # Automatización de PRs
 └── docs/
     ├── QUICKSTART.md         # Inicio en 5 minutos
     ├── AGENTS_REFERENCE.md   # Documentación completa
@@ -146,6 +149,31 @@ skills/
 - Evaluar test coverage
 
 **Invocación**: Invocado por @data-engineer como revisión final
+
+---
+
+### 7. **config-guardian.md** - Guardián de Configuración
+- **Tipo**: Subagent
+- **Modelo**: Gemini 2.0 Flash
+- **Temperatura**: 0.1
+- **Uso**: Automatización de Pull Requests y monitoreo de repositorios
+
+**Responsabilidades**:
+- Monitorear automáticamente repositorios en `/home/andresrsotelo/projects/`
+- Detectar cuando `develop` tiene cambios respecto a `main`
+- Crear PRs automáticos con descripción detallada
+- Notificar vía Telegram de PRs pendientes
+- Verificar conflictos y secretos antes de crear PRs
+- Ejecutar como cron job cada 30 minutos
+
+**Comandos disponibles**:
+- `/guardian scan` - Forzar escaneo inmediato
+- `/guardian status` - Ver estado de repos monitoreados
+- `/guardian add <ruta>` - Añadir repo al tracking
+- `/guardian remove <nombre>` - Eliminar repo del tracking
+- `/guardian logs` - Mostrar logs recientes
+
+**Invocación**: `@config-guardian "/guardian scan"`
 
 ---
 
@@ -510,6 +538,37 @@ Usuario → @git-manager
 
 ---
 
+## 🔍 Verificación de Estándares de Agentes
+
+### Validación Mandatoria con Context7
+
+**ANTES de crear o modificar cualquier agente**, es **OBLIGATORIO** verificar los estándares actuales utilizando Context7 mediante el MCP:
+
+```bash
+# Verificar estándares de agentes en context7
+https://context7.com/websites/agents_md/llms.txt
+```
+
+**Proceso de verificación:**
+1. **Antes de crear un agente**: Consultar Context7 para obtener las mejores prácticas actualizadas
+2. **Antes de modificar un agente existente**: Verificar que los cambios cumplen con los estándares
+3. **Después de crear/modificar**: Validar que la estructura YAML, secciones y formato cumplen con las convenciones documentadas
+
+**Qué verificar en Context7:**
+- Estructura YAML metadata válida
+- Secciones obligatorias (Persona, Responsabilidades, Protocolo, Límites)
+- Formato de salida estándar
+- Convenciones de nomenclatura
+- Permisos y restricciones de tools
+
+**Consecuencias de omitir:**
+- Agentes que no funcionan correctamente con el sistema
+- Inconsistencias en la orquestación multi-agente
+- Errores de parsing en la metadata YAML
+- Falta de integración con herramientas del proyecto
+
+---
+
 ## ⚠️ Restricciones Críticas
 
 ### Para Todos los Agentes
@@ -572,6 +631,6 @@ cat agents/docs/QUICKSTART.md
 
 ---
 
-**Editado**: Feb 06, 2026  
+**Editado**: Feb 07, 2026  
 **Mantenedor**: Equipo de Ingeniería de Contexto  
 **Licencia**: Consultar repositorio principal
