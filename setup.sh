@@ -30,7 +30,7 @@ SIDE_R="█▓▒"
 
 # CONFIGURACIÓN
 VERSION="1.0.0"
-TOOLS=("OpenCode" "Claude" "Gemini")
+TOOLS=("OpenCode" "Claude Code" "Openclaw")
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ═══════════════════════════════════════════════════════════════
@@ -130,6 +130,55 @@ get_project_path() {
     fi
     
     echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Ruta fijada: ${PROJECT_PATH}${NC}"
+}
+
+get_openclaw_path() {
+    step_header "${ICO_PATH} RUTA DE OPENCLAW"
+    
+    # Path fijo para Openclaw skills
+    OPENCLAW_PATH="${HOME}/.openclaw/skills"
+    
+    echo -e "${P_BLUE}┃${NC}   ${P_GRAY}Destino Openclaw:${NC}"
+    echo -e "${P_BLUE}┃${NC}   ${P_LIME}${OPENCLAW_PATH}${NC}"
+    
+    if [ ! -d "$OPENCLAW_PATH" ]; then
+        echo -e "${P_BLUE}┃${NC}   ${P_GOLD}⚠ Creando directorio...${NC}"
+        mkdir -p "$OPENCLAW_PATH"
+    fi
+    
+    echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ Ruta fijada: ${OPENCLAW_PATH}${NC}"
+}
+
+deploy_openclaw_skills() {
+    step_header "${ICO_SYNC} INYECCIÓN DE SKILLS EN OPENCLAW"
+    
+    local skill_count=0
+    
+    # Solo procesar la carpeta skills/
+    SOURCE_SKILLS="$SCRIPT_DIR/skills"
+    
+    if [ -d "$SOURCE_SKILLS" ]; then
+        for skill_dir in "$SOURCE_SKILLS"/*/; do
+            [ -d "$skill_dir" ] || continue
+            
+            skill_name=$(basename "$skill_dir")
+            dest_skill="$OPENCLAW_PATH/$skill_name"
+            
+            # Eliminar symlink existente si hay
+            if [ -L "$dest_skill" ]; then
+                rm -f "$dest_skill"
+            fi
+            
+            # Crear enlace simbólico de la carpeta del skill completa
+            if ln -sf "$skill_dir" "$dest_skill"; then
+                echo -e "${P_BLUE}┃${NC}     ${P_DARK}⚡${NC} ${P_GRAY}Skill inyectado: ${skill_name}${NC}"
+                skill_count=$((skill_count + 1))
+            fi
+        done
+    fi
+    
+    echo -e "${P_BLUE}┃${NC}   ${P_LIME}◆ ${skill_count} skills inyectados en Openclaw${NC}"
+    SUCCESS_COUNT=$skill_count
 }
 
 select_folders() {
@@ -232,12 +281,27 @@ print_receipt() {
     echo ""
     echo -e "   ${BOLD}Resumen de Operación:${NC}"
     echo -e "   ${P_GRAY}├─ Herramienta:  ${NC}${SELECTED_TOOL}"
-    echo -e "   ${P_GRAY}├─ Enlaces:      ${NC}${P_LIME}${SUCCESS_COUNT} creados${NC}"
+    
+    if [ "$SELECTED_TOOL" = "Openclaw" ]; then
+        echo -e "   ${P_GRAY}├─ Skills:       ${NC}${P_LIME}${SUCCESS_COUNT} inyectados${NC}"
+        echo -e "   ${P_GRAY}├─ Ubicación:    ${NC}${OPENCLAW_PATH}"
+    else
+        echo -e "   ${P_GRAY}├─ Enlaces:      ${NC}${P_LIME}${SUCCESS_COUNT} creados${NC}"
+        echo -e "   ${P_GRAY}├─ Ubicación:    ${NC}${PROJECT_PATH}"
+    fi
+    
     echo -e "   ${P_GRAY}└─ Timestamp:    ${NC}$(date '+%Y-%m-%d %H:%M:%S')"
     echo ""
     echo -e "   ${BOLD}Próximos pasos:${NC}"
-    echo -e "   ${P_BLUE}1.${NC} Navega a: ${P_GRAY}cd ${PROJECT_PATH}${NC}"
-    echo -e "   ${P_BLUE}2.${NC} Ejecuta tu IA preferida."
+    
+    if [ "$SELECTED_TOOL" = "Openclaw" ]; then
+        echo -e "   ${P_BLUE}1.${NC} Los skills están disponibles en Openclaw"
+        echo -e "   ${P_BLUE}2.${NC} Reinicia Openclaw si es necesario."
+    else
+        echo -e "   ${P_BLUE}1.${NC} Navega a: ${P_GRAY}cd ${PROJECT_PATH}${NC}"
+        echo -e "   ${P_BLUE}2.${NC} Ejecuta tu IA preferida."
+    fi
+    
     echo ""
 }
 
@@ -248,9 +312,18 @@ print_receipt() {
 main() {
     draw_hero
     select_tool
-    get_project_path
-    select_folders
-    create_links
+    
+    # Manejo especial para Openclaw (solo inyecta skills)
+    if [ "$SELECTED_TOOL" = "Openclaw" ]; then
+        get_openclaw_path
+        deploy_openclaw_skills
+    else
+        # Flujo normal para OpenCode y Claude Code
+        get_project_path
+        select_folders
+        create_links
+    fi
+    
     print_receipt
 }
 
