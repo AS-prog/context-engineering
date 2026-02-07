@@ -67,7 +67,7 @@ Ayuda a transformar ideas técnicas en diseños y especificaciones completas a t
 - **Documentación:** Escribir el diseño validado en la ruta determinada por la variable de entorno `OBSIDIAN_VAULT_PATH`:
   - **Ruta completa:** `$OBSIDIAN_VAULT_PATH/01_borradores/<topic>_YYYYMMDD.md`
   - **Fallback:** Si `OBSIDIAN_VAULT_PATH` no está definida, usar `./docs/plans/<topic>_YYYYMMDD.md`
-- Usa la plantilla `nota_en_desarrollo.md` ubicada en `$OBSIDIAN_VAULT_PATH/00_plantillas/nota_en_desarrollo.md`.
+- Usa la plantilla `nota_en_desarrollo.md` ubicada en `$OBSIDIAN_VAULT_PATH/00_borradores/nota_en_desarrollo.md`.
 - **Metadatos YAML requeridos:**
   ```yaml
   ---
@@ -83,3 +83,76 @@ Ayuda a transformar ideas técnicas en diseños y especificaciones completas a t
 - **Implementación:** Preguntar "¿Listo para configurar la implementación?" antes de proceder.
 - Asegúrate de que el directorio `01_borradores/` exista dentro del vault.
 - Nombre de archivo: usar formato `titulo_YYYYMMDD.md` (ej: `api_diseno_20260207.md`).
+
+## Estructura del Documento Técnico
+
+Aplica esta estructura al contenido del borrador técnico:
+
+1. **Título:** Nombre descriptivo del componente/sistema
+2. **Resumen Ejecutivo:** Visión general de alto nivel
+3. **Contexto Técnico:** Estado actual del sistema, dependencias, restricciones
+4. **Requisitos:** Funcionales y no funcionales identificados
+5. **Diseño Propuesto:** Arquitectura, componentes, flujo de datos
+6. **Alternativas Técnicas:** Otras opciones evaluadas con análisis de pros/contras
+7. **Manejo de Errores:** Estrategias de recuperación y casos edge
+8. **Pruebas:** Estrategia de testing y criterios de aceptación
+9. **Implementación:** Plan de desarrollo y despliegue
+10. **Referencias:** Documentación, recursos, notas relacionadas
+
+## Tipos de Borradores Técnicos
+
+### Exploración/Evaluación Técnica
+- **Estructura:** Tecnología → Casos de Uso → Evaluación → Recomendación
+- **Ejemplos:** Comparación de herramientas, decisiones de arquitectura
+- **Plantilla:** `technical_evaluation_template.md` en `00_borradores/`
+
+### Implementación de Sistema
+- **Estructura:** Requisitos → Diseño → Componentes → Testing → Despliegue
+- **Ejemplos:** Nuevos servicios, refactorizaciones mayores
+- **Plantilla:** `system_implementation_template.md` en `00_borradores/`
+
+## Fases del Proceso de Diseño
+
+### Fase 1: Establecimiento de Contexto
+1. **Detección de Vault:** Identificar ubicación del vault de Obsidian objetivo
+2. **Verificación de Estructura:** Asegurar que existan directorios requeridos (`01_borradores/`, `00_borradores/`)
+3. **Carga de Plantilla:** Usar plantilla apropiada desde `00_borradores/`
+4. **Identificación de Tema:** Clarificar el tema técnico específico
+
+### Fase 2: Diálogo Iterativo
+1. **Enfoque de Pregunta Única:** Una pregunta enfocada a la vez
+2. **Opciones de Múltiple Opción:** Proporcionar 2-3 alternativas claras cuando sea apropiado
+3. **Refinamiento Progresivo:** Construir comprensión incrementalmente
+4. **Puntos de Validación:** Confirmar alineación después de cada sección significativa
+
+### Fase 3: Salida Estructurada
+1. **Aplicación de Plantilla:** Aplicar plantilla estándar del vault
+2. **Completitud de Metadatos:** Llenar todos los campos YAML requeridos
+3. **Nombramiento de Archivo:** Usar formato consistente: `tema_YYYYMMDD.md`
+4. **Ubicación:** Guardar en `01_borradores/` o directorio específico del contexto
+
+### Fase 4: Seguimiento y Mantenimiento
+1. **Seguimiento de Estado:** Actualizar campo `estado` a medida que avanza el trabajo
+2. **Cross-referencing:** Crear wikilinks a documentos relacionados
+3. **Generación de Resumen:** Opcionalmente crear resúmenes ejecutivos
+4. **Planificación de Archivado:** Definir criterios para mover de `en_revision` a `completado`
+
+## Validaciones y Verificación
+
+### Pre-Creación
+- [ ] Confirmar accesibilidad del vault
+- [ ] Verificar estructura de directorios
+- [ ] Confirmar disponibilidad de plantilla en `00_borradores/`
+- [ ] Evaluar unicidad del tema técnico
+
+### Durante Creación
+- [ ] Verificar completitud de metadatos YAML
+- [ ] Confirmar flujo lógico de secciones técnicas
+- [ ] Validar precisión de referencias cruzadas
+- [ ] Cumplir convención de nombres
+
+### Post-Creación
+- [ ] Confirmar escritura exitosa en sistema de archivos
+- [ ] Verificar lectura del archivo
+- [ ] Validar integridad de wikilinks
+- [ ] Confirmar indexación en búsqueda
